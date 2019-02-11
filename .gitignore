@@ -1,0 +1,7 @@
+/.htaccess
+/.configuration.php
+/*.log
+/*.zip
+/*.sql
+/web.config
+/test/
