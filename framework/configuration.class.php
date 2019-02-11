@@ -27,6 +27,29 @@ define('USER_ANY',-1);
 define('USER_NOBODY',0);
 define('USER_SYSTEM',1);
 
+// Global constants for settings
+define('SETTING_ABOVECONTENT',4);
+define('SETTING_ABOVETITLE',2);
+define('SETTING_AUTHOR',4);
+define('SETTING_BELOWCONTENT',5);
+define('SETTING_BELOWTITLE',3);
+define('SETTING_CREATEDDATE',4);
+define('SETTING_EDITOR',5);
+define('SETTING_FLOATLEFT',6);
+define('SETTING_FLOATRIGHT',7);
+define('SETTING_GLOBAL',1);
+define('SETTING_HIDE',2);
+define('SETTING_MODIFIEDDATE',5);
+define('SETTING_NO',0);
+define('SETTING_OFF',1);
+define('SETTING_ON',0);
+define('SETTING_PARAGRAPH',3);
+define('SETTING_PUBLISHEDDATE',6);
+define('SETTING_PUBLISHER',6);
+define('SETTING_SHOW',3);
+define('SETTING_TENLINES',4);
+define('SETTING_YES',1);
+
 final class Configuration {
 	private static $_Configuration;
 	

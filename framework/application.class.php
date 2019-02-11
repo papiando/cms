@@ -38,8 +38,8 @@ final class Application {
 					if(class_exists($view)) {
 						if(method_exists($view,$format)) {
 							// Send retrieved data to view
-							self::$_View = new $view;
-							$output = self::$_View->$format($_Data);
+							self::$_View = new $view($_Data);
+							$output = self::$_View->$format();
 							echo $output;
 							die();
 						} else {
