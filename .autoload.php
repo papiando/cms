@@ -12,20 +12,36 @@ define('__VERSION__','2.0.0');
 spl_autoload_register(function($class) {
 	// Get the last part of the class (since all classes will have a namespace)
 	$class = strtolower(basename(str_replace('\\','/',$class)));
+	// Determine whether there is a route defined
+	$route = (defined('__ROUTE__') ? __ROUTE__ : null);
 	// Set path names
-	$frameworkPath = __ROOT__.DS.'framework'.DS.$class.'.class.php';
-	$modelPath = __ROOT__.DS.'model'.DS.$class.'.model.php';
-	$viewPath = __ROOT__.DS.'view'.DS.str_replace('view','',$class).'.view.php';
-	$controllerPath = __ROOT__.DS.'controller'.DS.str_replace('controller','',$class).'.controller.php';
-	// Include if file exists
-	if(file_exists($frameworkPath))
-		require_once($frameworkPath);
-	elseif(file_exists($modelPath))
-		require_once($modelPath);
-	elseif(file_exists($viewPath) && strpos($class,'view') > 0)
-		require_once($viewPath);
-	elseif(file_exists($controllerPath) && strpos($class,'controller') > 0)
-		require_once($controllerPath);
+	$frameworkPath = 'framework'.DS.$class.'.class.php';
+	$modelPath = 'model'.DS.$class.'.model.php';
+	$viewPath = 'view'.DS.str_replace('view','',$class).'.view.php';
+	$controllerPath = 'controller'.DS.str_replace('controller','',$class).'.controller.php';
+	// Include if file exists ($route enables override)
+	if($route && file_exists(__ROOT__.DS.$route.DS.$frameworkPath))
+		require_once(__ROOT__.DS.$route.DS.$frameworkPath);
+	elseif(file_exists(__ROOT__.DS.$frameworkPath))
+		require_once(__ROOT__.DS.$frameworkPath);
+	elseif($route && file_exists(__ROOT__.DS.$route.DS.$modelPath))
+		require_once(__ROOT__.DS.$route.DS.$modelPath);
+	elseif(file_exists(__ROOT__.DS.$modelPath))
+		require_once(__ROOT__.DS.$modelPath);
+	elseif($route && file_exists(__ROOT__.DS.$route.DS.$viewPath) && strpos($class,'view') > 0)
+		require_once(__ROOT__.DS.$route.DS.$viewPath);
+	elseif(file_exists(__ROOT__.DS.$viewPath) && strpos($class,'view') > 0)
+		require_once(__ROOT__.DS.$viewPath);
+	elseif($route && file_exists(__ROOT__.DS.$route.DS.$controllerPath) && strpos($class,'controller') > 0)
+		require_once(__ROOT__.DS.$route.DS.$controllerPath);
+	elseif(file_exists(__ROOT__.DS.$controllerPath) && strpos($class,'controller') > 0)
+		require_once(__ROOT__.DS.$controllerPath);
+	try {
+		if(!class_exists(__CUBO__.'\\'.$class,$false))
+			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Class '{$class}' could not be loaded"]);
+	} catch(Error $_Error) {
+		$_Error->showMessage();
+	}
 });
 
 	// Detect install; if .config.php does not exist, then assume that it's a fresh install

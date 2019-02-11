@@ -70,6 +70,7 @@ class Router {
 			// Get route if given
 			if(in_array($part,array_keys($routes))) {
 				$this->route = $routes[$part];
+				define('__ROUTE__',$this->route['path'] ?? null);
 				$this->method = $this->route['default-method'] ?? $this->method;
 				$this->format = $this->route['default-format'] ?? $this->format;
 				array_shift($path_parts);
