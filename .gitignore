@@ -5,3 +5,6 @@
 /*.sql
 /web.config
 /test/
+/admin/
+/api/
+/backup/
