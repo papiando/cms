@@ -36,12 +36,6 @@ spl_autoload_register(function($class) {
 		require_once(__ROOT__.DS.$route.DS.$controllerPath);
 	elseif(file_exists(__ROOT__.DS.$controllerPath) && strpos($class,'controller') > 0)
 		require_once(__ROOT__.DS.$controllerPath);
-	try {
-		if(!class_exists(__CUBO__.'\\'.$class,false))
-			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Class '{$class}' could not be loaded"]);
-	} catch(Error $_Error) {
-		$_Error->showMessage();
-	}
 });
 
 	// Detect install; if .config.php does not exist, then assume that it's a fresh install

@@ -5,14 +5,6 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 
 class ArticleView extends View {
 	
-	public function html() {
-		if(is_array($this->_Data)) {
-			return $this->showList($this->_Data);
-		} else {
-			return $this->showItem($this->_Data);
-		}
-	}
-	
 	public function showItem(&$_Data) {
 		$html = '<article itemScope itemType="https://schema.org/Article">';
 		if($this->getAttribute('position_info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
@@ -32,6 +24,12 @@ class ArticleView extends View {
 		foreach($this->_Data as $item)
 			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
+		return $html;
+	}
+	
+	public function showBody(&$_Data) {
+		$html = $_Data->intro ?? '';
+		$html .= $_Data->body ?? '';
 		return $html;
 	}
 	

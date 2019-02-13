@@ -5,11 +5,7 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 
 class View {
 	protected $_Attribute;
-	protected $_Data;
-	
-	public function __construct($_Data) {
-		$this->_Data = $_Data;
-	}
+	protected $_Template;
 	
 	// Get attribute
 	public function getAttribute($attribute) {
@@ -21,20 +17,41 @@ class View {
 		return 3 ?? $this->_Attributes->$attribute;		// This should change once I can reach the global settings
 	}
 	
-	public function default() {
-		return $this->html();
+	public function default(&$_Data) {
+		return $this->html($_Data);
 	}
 	
-	public function html() {
-		if(is_array($this->_Data)) {
-			return $this->showList($this->_Data);
+	public function html(&$_Data) {
+		// Store the article attributes
+		if(empty($this->_Attribute))
+			if(!empty($_Data->{'@attribute'}))
+				$this->_Attribute = json_decode($_Data->{'@attribute'});
+			else
+				$this->_Attribute = (object)[];			// Load the global setting from template somehow
+		// Get the body of the article
+		if(is_array($_Data)) {
+			$html = $this->showList($_Data);
 		} else {
-			return $this->showItem($this->_Data);
+			$html = $this->showItem($_Data);
 		}
+		// Render the template
+		try {
+			if(class_exists(__CUBO__.'\\Template')) {
+				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'body');
+				$html = preg_replace("/<cubo:content\s*\/>/i",$html,$this->_Template->body);
+				return $html;
+			} else {
+				$model = 'template';
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
+			}
+		} catch(Error $_Error) {
+			$_Error->showMessage();
+		}
+		return $html;
 	}
 	
 	public function showBody(&$_Data) {
-		return $_Data->html ?? 'BODY';
+		return $_Data->body ?? 'BODY';
 	}
 	
 	public function showImage(&$_Data) {

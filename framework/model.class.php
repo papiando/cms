@@ -23,7 +23,7 @@ abstract class Model {
 		if(empty($id)) {
 			self::getDB()->where("{$filter}");			// Safety net if no valid $id is provided
 		} elseif(is_numeric($id)) {
-			self::getDB()->where("`id`=:id AND {$filter}");
+			self::getDB()->where("`#`=:id AND {$filter}");
 		} else {
 			self::getDB()->where("`name`=:id AND {$filter}");
 		}

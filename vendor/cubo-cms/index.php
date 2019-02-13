@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="https://schema.org/WebPage">
+<html lang="<cubo:param name='language' />" itemscope itemtype="https://schema.org/WebPage">
 <head>
-	<title itemprop="name headline"><cubo:param name='site_name' /></title>
-	<base itemprop="url" href="<cubo:param name='base_url' />/admin" />
+	<title itemprop="name headline"><cubo:param name='site-name' /></title>
+	<base itemprop="url" href="<cubo:param name='base-url' />/admin" />
 	<meta charset="utf-8" />
-	<meta name="application_name" content="<cubo:param name='site_name' />" />
+	<meta name="application_name" content="<cubo:param name='site-name' />" />
 	<meta name="generator" content="<cubo:param name='generator' />" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
 	<link href="/vendor/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -18,28 +18,30 @@
 </head>
 <body class="has-fixed-nav">
 	<nav id="navigation" class="navbar navbar-toggleable-md navbar-dark bg-primary text-inverse fixed-top">
-		<div class="container d-flex flex-nowrap">
+		<section class="container d-flex flex-nowrap" id="menu-content" role="menu">
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-			<a class="navbar-brand" href="/"><img class="brand-logo" src="<cubo:param name='brand_logo' />" /><span class="brand-name"><cubo:param name='brand_name' /></span></a>
-		</div>
+			<a class="navbar-brand" href="/"><img class="brand-logo" src="<cubo:param name='brand-logo' />" /><span class="brand-name"><cubo:param name='brand-name' /></span></a>
+		</section>
 	</nav>
 	<header id="header">
-		<cubo:module name="header" />
+		<section class="container" id="header-content" role="info">
+			<cubo:module position="header" />
+		</section>
 	</header>
 	<section id="message">
-		<div class="container">
+		<section class="container" id="message-content" role="message">
 			<cubo:message />
 		</div>
 	</section>
 	<main id="main">
-		<div class="container">
-			<section id="main-content" role="main">
-				<cubo:content />
-			</section>
-		</div>
+		<section class="container" id="main-content" role="main">
+			<cubo:content />
+		</section>
 	</main>
 	<footer id="footer" class="bg-inverse fixed-bottom">
-		<cubo:module name="footer" />
+		<section class="container" id="footer-content" role="info">
+			<cubo:module name="footer" />
+		</section>
 	</footer>
 </body>
 </html>
