@@ -59,34 +59,42 @@ class View {
 		return $html;
 	}
 	
+	// Shared function to show item text in uniform way
 	public function showBody(&$_Data) {
-		return $_Data->body ?? 'BODY';
+		return $_Data->body ?? '';
 	}
 	
+	// Shared function to show item image in uniform way
 	public function showImage(&$_Data) {
-		return $_Data->image ?? 'IMAGE';
-	}
-	
-	public function showInfo(&$_Data) {
-		return 'INFO';
-	}
-	
-	public function showItem(&$_Data) {
-		$html = '<h1>'.$this->_Data->title.'</h1>';
-		$html .= '<div>'.$this->_Data->html.'</div>';
+		$html = '';
+		if($_Image = Image::get($_Data->image,'name,title')) {
+			$html = '<img class="article-image" src="'.__BASE__.'/image/'.urlencode($_Image->name).'" alt="'.htmlspecialchars($_Image->title,ENT_QUOTES|ENT_HTML5).'" />';
+		}
 		return $html;
 	}
 	
+	// Shared function to show an item
+	public function showItem(&$_Data) {
+		$html = '<div class="article">';
+		$html = '<h1 class="article-title">'.$this->showTitle($_Data).'</h1>';
+		$html .= '<div class="article-body">'.$this->showBody($_Data).'</div>';
+		return $html;
+		$html .= '<div class="article-body">'.$this->showBody($_Data).'</div>';
+		return $html;
+	}
+	
+	// Shared function to show a list of items
 	public function showList(&$_Data) {
-		$html = '<ul>';
+		$html = '<ul class="item-list">';
 		foreach($this->_Data as $item)
-			$html .= '<li>'.$this->showItem($item).'</li>';
+			$html .= '<li class="list-item">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
 		return $html;
 	}
 	
+	// Shared function to show item heading in uniform way
 	public function showTitle(&$_Data) {
-		return '<h1>'.htmlspecialchars($_Data->title,ENT_QUOTES|ENT_HTML5).'</h1>';
+		return '<h1 class="article-title">'.htmlspecialchars($_Data->title,ENT_QUOTES|ENT_HTML5).'</h1>';
 	}
 }
 ?>
