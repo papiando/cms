@@ -37,7 +37,7 @@ define('SETTING_CREATEDDATE',4);
 define('SETTING_EDITOR',5);
 define('SETTING_FLOATLEFT',6);
 define('SETTING_FLOATRIGHT',7);
-define('SETTING_GLOBAL',1);
+define('SETTING_GLOBAL',-1);
 define('SETTING_HIDE',2);
 define('SETTING_MODIFIEDDATE',5);
 define('SETTING_NO',0);
@@ -57,6 +57,7 @@ final class Configuration {
 	//   Modify parameter if the configuration file should be named differently
 	public function __construct($file = ".configuration.php") {
 		self::load($file);
+		empty(self::$_Configuration->_Attribute) && self::$_Configuration->_Attribute = [];
 		empty(self::$_Configuration->_Default) && self::$_Configuration->_Default = [];
 		empty(self::$_Configuration->_Parameter) && self::$_Configuration->_Parameter = [];
 	}
@@ -76,6 +77,16 @@ final class Configuration {
 	// Store configuration setting
 	public static function set($property,$value) {
 		return self::$_Configuration->$property = $value;
+	}
+	
+	// Retrieve attribute setting
+	public static function getAttribute($property,$default = null) {
+		return self::$_Configuration->_Attribute[$property] ?? $default ?? null;
+	}
+	
+	// Store attribute setting
+	public static function setAttribute($property,$value) {
+		return self::$_Configuration->_Attribute[$property] = $value;
 	}
 	
 	// Retrieve default setting

@@ -10,12 +10,7 @@ class View {
 	
 	// Get attribute
 	public function getAttribute($attribute) {
-		if(empty($this->_Attribute))
-			if(!empty($this->_Data->{'@attributes'}))
-				$this->_Attribute = json_decode($this->_Data->{'@attributes'});
-			else
-				$this->_Attribute = (object)[];			// Load the global setting somehow
-		return 3 ?? $this->_Attributes->$attribute;		// This should change once I can reach the global settings
+		return (isset($this->_Attribute[$attribute]) && $this->_Attribute[$attribute] != SETTING_GLOBAL ? $this->_Attribute[$attribute] : Configuration::getAttribute($attribute) ?? null);
 	}
 	
 	public function default(&$_Data) {
@@ -25,10 +20,22 @@ class View {
 	public function html(&$_Data) {
 		// Store the article attributes
 		if(empty($this->_Attribute))
-			if(!empty($_Data->{'@attribute'}))
-				$this->_Attribute = json_decode($_Data->{'@attribute'});
-			else
-				$this->_Attribute = (object)[];			// Load the global setting from template somehow
+			!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
+		// Retrieve the template
+		try {
+			if(class_exists(__CUBO__.'\\Template')) {
+				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'name,body');
+				// Save template name as parameter
+				Configuration::setParameter('template',$this->_Template->name);
+				// Save template attributes as global settings
+				!empty($this->_Template->{'@attribute'}) && Configuration::set('_Attribute',json_decode($this->_Template->{'@attribute'},true));
+			} else {
+				$model = 'template';
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
+			}
+		} catch(Error $_Error) {
+			$_Error->showMessage();
+		}
 		// Get the body of the article
 		if(is_array($_Data)) {
 			$html = $this->showList($_Data);
@@ -36,25 +43,14 @@ class View {
 			$html = $this->showItem($_Data);
 		}
 		// Render the template
-		try {
-			if(class_exists(__CUBO__.'\\Template')) {
-				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'name,body');
-				$html = preg_replace("/<cubo:content\s*\/>/i",$html,$this->_Template->body);
-				Configuration::setParameter('template',$this->_Template->name);
-				// Render plugins
-				$this->_Plugin = Plugin::getAll();
-				foreach($this->_Plugin as $_Plugin) {
-					$plugin = __CUBO__.'\\'.$_Plugin->name.'plugin';
-					if(class_exists($plugin))
-						$html = $plugin::render($html);
-				}
-				return $html;
-			} else {
-				$model = 'template';
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
-			}
-		} catch(Error $_Error) {
-			$_Error->showMessage();
+		$html = preg_replace("/<cubo:content\s*\/>/i",$html,$this->_Template->body);
+		Configuration::setParameter('template',$this->_Template->name);
+		// Render plugins
+		$this->_Plugin = Plugin::getAll();
+		foreach($this->_Plugin as $_Plugin) {
+			$plugin = __CUBO__.'\\'.$_Plugin->name.'plugin';
+			if(class_exists($plugin))
+				$html = $plugin::render($html);
 		}
 		return $html;
 	}
