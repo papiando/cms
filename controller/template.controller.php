@@ -4,7 +4,7 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class TemplateController extends Controller {
-	protected $columns = "script,style";
+	protected $columns = "name,accesslevel,script,status,style";
 	
 	// Minify CSS to speed up loading
 	private static function minifyCSS($css){

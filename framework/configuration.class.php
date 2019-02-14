@@ -57,6 +57,8 @@ final class Configuration {
 	//   Modify parameter if the configuration file should be named differently
 	public function __construct($file = ".configuration.php") {
 		self::load($file);
+		empty(self::$_Configuration->_Default) && self::$_Configuration->_Default = [];
+		empty(self::$_Configuration->_Parameter) && self::$_Configuration->_Parameter = [];
 	}
 	
 	// Load settings from configuration file
@@ -84,6 +86,16 @@ final class Configuration {
 	// Store default setting
 	public static function setDefault($property,$value) {
 		return self::$_Configuration->_Default[$property] = $value;
+	}
+	
+	// Retrieve parameter
+	public static function getParameter($property,$default = null) {
+		return self::$_Configuration->_Parameter[$property] ?? $default ?? null;
+	}
+	
+	// Store parameter
+	public static function setParameter($property,$value) {
+		return self::$_Configuration->_Parameter[$property] = $value;
 	}
 	
 	// Retrieve route setting

@@ -19,6 +19,8 @@ spl_autoload_register(function($class) {
 	$modelPath = 'model'.DS.$class.'.model.php';
 	$viewPath = 'view'.DS.str_replace('view','',$class).'.view.php';
 	$controllerPath = 'controller'.DS.str_replace('controller','',$class).'.controller.php';
+	$pluginPath = 'plugin'.DS.str_replace('plugin','',$class).'.plugin.php';
+	$modulePath = 'module'.DS.str_replace('module','',$class).'.module.php';
 	// Include if file exists ($route enables override)
 	if($route && file_exists(__ROOT__.DS.$route.DS.$frameworkPath))
 		require_once(__ROOT__.DS.$route.DS.$frameworkPath);
@@ -36,6 +38,14 @@ spl_autoload_register(function($class) {
 		require_once(__ROOT__.DS.$route.DS.$controllerPath);
 	elseif(file_exists(__ROOT__.DS.$controllerPath) && strpos($class,'controller') > 0)
 		require_once(__ROOT__.DS.$controllerPath);
+	elseif($route && file_exists(__ROOT__.DS.$route.DS.$pluginPath) && strpos($class,'plugin') > 0)
+		require_once(__ROOT__.DS.$route.DS.$pluginPath);
+	elseif(file_exists(__ROOT__.DS.$pluginPath) && strpos($class,'plugin') > 0)
+		require_once(__ROOT__.DS.$pluginPath);
+	elseif($route && file_exists(__ROOT__.DS.$route.DS.$modulePath) && strpos($class,'module') > 0)
+		require_once(__ROOT__.DS.$route.DS.$modulePath);
+	elseif(file_exists(__ROOT__.DS.$modulePath) && strpos($class,'module') > 0)
+		require_once(__ROOT__.DS.$modulePath);
 });
 
 	// Detect install; if .config.php does not exist, then assume that it's a fresh install

@@ -3,7 +3,7 @@ namespace Cubo;
 
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
-class ThemeController extends Controller {
+class PluginController extends Controller {
 	protected $columns = "name,accesslevel,script,status,style";
 	
 	// Minify CSS to speed up loading

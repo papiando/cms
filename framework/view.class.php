@@ -5,6 +5,7 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 
 class View {
 	protected $_Attribute;
+	protected $_Plugin;
 	protected $_Template;
 	
 	// Get attribute
@@ -37,8 +38,16 @@ class View {
 		// Render the template
 		try {
 			if(class_exists(__CUBO__.'\\Template')) {
-				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'body');
+				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'name,body');
 				$html = preg_replace("/<cubo:content\s*\/>/i",$html,$this->_Template->body);
+				Configuration::setParameter('template',$this->_Template->name);
+				// Render plugins
+				$this->_Plugin = Plugin::getAll();
+				foreach($this->_Plugin as $_Plugin) {
+					$plugin = __CUBO__.'\\'.$_Plugin->name.'plugin';
+					if(class_exists($plugin))
+						$html = $plugin::render($html);
+				}
 				return $html;
 			} else {
 				$model = 'template';

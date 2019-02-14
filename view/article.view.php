@@ -6,6 +6,7 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 class ArticleView extends View {
 	
 	public function showItem(&$_Data) {
+		empty($_Data->title) || Configuration::setParameter('title',$_Data->title);
 		$html = '<article itemScope itemType="https://schema.org/Article">';
 		if($this->getAttribute('position_info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
 		if($this->getAttribute('position_image') == SETTING_ABOVETITLE) $html .= $this->showImage($_Data);
@@ -24,6 +25,7 @@ class ArticleView extends View {
 		foreach($this->_Data as $item)
 			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
+		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
 		return $html;
 	}
 	
