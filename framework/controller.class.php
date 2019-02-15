@@ -3,23 +3,23 @@ namespace Cubo;
 
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
-abstract class Controller {
-	protected static $_Model;
-	protected static $_Router;
-	protected static $_View;
+class Controller {
+	protected $_Model;
+	protected $_Router;
+	protected $_View;
 	protected $columns = "*";
 	
 	// Constructor saves router
 	public function __construct($_Router = null) {
-		self::$_Router = $_Router ?? Application::getRouter();
+		$this->_Router = $_Router ?? Application::getRouter();
 	}
 	
 	// Default access levels
-	protected static $_Authors = [ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
-	protected static $_Editors = [ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
-	protected static $_Publishers = [ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
-	protected static $_Managers = [ROLE_MANAGER,ROLE_ADMINISTRATOR];
-	protected static $_Administrators = [ROLE_ADMINISTRATOR];
+	protected $_Authors = [ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
+	protected $_Editors = [ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
+	protected $_Publishers = [ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
+	protected $_Managers = [ROLE_MANAGER,ROLE_ADMINISTRATOR];
+	protected $_Administrators = [ROLE_ADMINISTRATOR];
 	
 	// Returns true if the model includes an access property
 	private function containsAccessProperty() {
@@ -33,7 +33,7 @@ abstract class Controller {
 	
 	// Returns router
 	public function getRouter() {
-		return self::$_Router;
+		return $this->_Router;
 	}
 	
 	// Returns filter for list permission
@@ -63,20 +63,20 @@ abstract class Controller {
 	}
 	
 	public function all() {
-		$model = __CUBO__.'\\'.self::getRouter()->getController();
+		$model = __CUBO__.'\\'.$this->getRouter()->getController();
 		try {
 			if(class_exists($model)) {
-				self::$_Model = new $model;
-				$_Data = self::$_Model::getAll($this->columns,$this->requireListPermission());
+				$this->_Model = new $model;
+				$_Data = $this->_Model::getAll($this->columns,$this->requireListPermission());
 				if($_Data) {
 					return $this->render($_Data);
 				} else {
 					// No items returned, must be empty data set
-					$model = self::getRouter()->getController();
+					$model = $this->getRouter()->getController();
 					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>2,'response'=>405,'message'=>"Model '{$model}' returned no data"]);
 				}
 			} else {
-				$model = self::getRouter()->getController();
+				$model = $this->getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
 			}
 		} catch(Error $_Error) {
@@ -92,52 +92,52 @@ abstract class Controller {
 	
 	// Call view with requested format
 	protected function render($_Data) {
-		$view = __CUBO__.'\\'.self::getRouter()->getController().'view';
-		$format = self::getRouter()->getFormat();
+		$view = __CUBO__.'\\'.$this->getRouter()->getController().'view';
+		$format = $this->getRouter()->getFormat();
 		if(class_exists($view)) {
 			if(method_exists($view,$format)) {
 				// Send retrieved data to view and return output
-				self::$_View = new $view;
-				return self::$_View->$format($_Data);
+				$this->_View = new $view;
+				return $this->_View->$format($_Data);
 			} else {
 				// Method does not exist for this view
-				$view = self::getRouter()->getController();
+				$view = $this->getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not have the method '{$format}' defined"]);
 			}
 		} else {
 			// View not found
-			$view = self::getRouter()->getController();
+			$view = $this->getRouter()->getController();
 			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not exist"]);
 		}
 		return false;
 	}
 	
 	public function view() {
-		$model = __CUBO__.'\\'.self::getRouter()->getController();
+		$model = __CUBO__.'\\'.$this->getRouter()->getController();
 		try {
 			if(class_exists($model)) {
-				self::$_Model = new $model;
-				$_Data = self::$_Model::get(self::getRouter()->getName(),$this->columns,$this->requireViewPermission());
+				$this->_Model = new $model;
+				$_Data = $this->_Model::get($this->getRouter()->getName(),$this->columns,$this->requireViewPermission());
 				if($_Data) {
 					return $this->render($_Data);
 				} else {
 					// Could not retrieve item, check again to see if it exists
-					$result = self::$_Model::get(self::getRouter()->getName(),$this->columns);
+					$result = $this->_Model::get($this->getRouter()->getName(),$this->columns);
 					if($result) {
 						// The item is found; determine if it is published
 						if(isset($result->status) && $result->status == STATUS_PUBLISHED) {
 							// The item is published; visitor does not have access
 							if(Session::isGuest()) {
 								// No user is logged in; redirect to login page
-								$model = ucfirst(self::getRouter()->getController());
-								$name = self::getRouter()->getName();
+								$model = ucfirst($this->getRouter()->getController());
+								$name = $this->getRouter()->getName();
 								Session::setMessage(array('alert'=>'info','icon'=>'exclamation','message'=>"{$model} '{$name}' requires user access"));
 								Session::set('login_redirect',Configuration::getParameter('uri'));
 								Router::redirect('/user/login',403);
 							} else {
 								// User is logged in, so does not have required permissions
-								$model = ucfirst(self::getRouter()->getController());
-								$name = self::getRouter()->getName();
+								$model = ucfirst($this->getRouter()->getController());
+								$name = $this->getRouter()->getName();
 								throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>3,'response'=>405,'message'=>"User does not have access to {$model} '{$name}'"]);
 								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','text'=>"This user has no access to {$this->class}"));
 								//Session::set('login_redirect',Application::getParam('uri'));
@@ -145,19 +145,19 @@ abstract class Controller {
 							}
 						} else {
 							// The item is not published
-							$model = ucfirst(self::getRouter()->getController());
-							$name = self::getRouter()->getName();
+							$model = ucfirst($this->getRouter()->getController());
+							$name = $this->getRouter()->getName();
 							throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"{$model} '{$name}' is no longer available"]);
 						}
 					} else {
 						// The item really does not exist
-						$model = ucfirst(self::getRouter()->getController());
-						$name = self::getRouter()->getName();
+						$model = ucfirst($this->getRouter()->getController());
+						$name = $this->getRouter()->getName();
 						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"{$model} '{$name}' does not exist"]);
 					}
 				}
 			} else {
-				$model = self::getRouter()->getController();
+				$model = $this->getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
 			}
 		} catch(Error $_Error) {
@@ -180,7 +180,7 @@ abstract class Controller {
 	
 	// Returns true if current user has permitted role to create an item
 	public function canCreate() {
-		return in_array(Session::getRole(),self::$_authors);
+		return in_array(Session::getRole(),$this->_Authors);
 	}
 	
 	// Returns true if current user does not have permitted role to create an item
@@ -190,7 +190,7 @@ abstract class Controller {
 	
 	// Returns true if current user is the author or has permitted role to edit an item
 	public function canEdit($author = 0) {
-		return in_array(Session::getRole(),self::$_Editors) || Session::getUser() == $author;
+		return in_array(Session::getRole(),$this->_Editors) || Session::getUser() == $author;
 	}
 	
 	// Returns true if current user is not the author and does not have permitted role to edit an item
@@ -200,7 +200,7 @@ abstract class Controller {
 	
 	// Returns true if current user is the author or has permitted role to publish an item
 	public function canManage() {
-		return in_array(Session::getRole(),self::$_Managers);
+		return in_array(Session::getRole(),$this->_Managers);
 	}
 	
 	// Returns true if current user is not the author and does not have permitted role to publish an item
@@ -210,7 +210,7 @@ abstract class Controller {
 	
 	// Returns true if current user is the author or has permitted role to publish an item
 	public function canPublish() {
-		return in_array(Session::getRole(),self::$_Publishers);
+		return in_array(Session::getRole(),$this->_Publishers);
 	}
 	
 	// Returns true if current user is not the author and does not have permitted role to publish an item
