@@ -47,7 +47,7 @@ class View {
 		Configuration::setParameter('template',$this->_Template->name);
 		// Render plugins
 		$this->_Plugin = Plugin::getAll();
-		foreach($this->_Plugin as $_Plugin) {
+		foreach($this->_Plugin as &$_Plugin) {
 			$plugin = __CUBO__.'\\'.$_Plugin->name.'plugin';
 			if(class_exists($plugin))
 				$html = $plugin::render($html);
