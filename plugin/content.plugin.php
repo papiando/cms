@@ -13,3 +13,4 @@ class ContentPlugin extends Addon {
 		}
 	}
 }
+?>
