@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
--- Host: localhost    Database: cubo_base
+-- Host: localhost    Database: cubo_cubo
 -- ------------------------------------------------------
 -- Server version	5.7.11-log
 
@@ -37,7 +37,7 @@ CREATE TABLE `accesslevel` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Access Level';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Access Level';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE `article` (
   `visits` int(20) DEFAULT NULL,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Article';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='Article';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,6 +91,7 @@ CREATE TABLE `article` (
 
 LOCK TABLES `article` WRITE;
 /*!40000 ALTER TABLE `article` DISABLE KEYS */;
+INSERT INTO `article` VALUES (1,'home','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"3\",\"show_tags\":\"-1\",\"show_date\":\"4\",\"show_image\":\"3\",\"position_image\":\"2\",\"show_info\":\"-1\",\"position_info\":\"3\",\"show_readmore\":\"1\"}',1,1,'<p>Welcome to the home page.</p>',1,'1968-12-10 00:00:00','This is the home page',NULL,NULL,'<p>There is no place like home.</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,NULL,'Home',0),(2,'login','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"2\",\"show_tags\":\"2\",\"show_date\":\"2\",\"show_image\":\"2\",\"position_image\":\"2\",\"show_info\":\"2\",\"position_info\":\"3\",\"show_readmore\":\"0\"}',3,1,'<cubo:module name=\"login\" />',1,'1968-12-10 00:00:00','This is the login page',NULL,NULL,'<p>Please provide your user name and password</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,1,'User Login',0),(10,'unpublished',NULL,1,2,'<p>This article is not published</p>',1,NULL,'Unpublished article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,0,NULL,NULL,'Unpublished article',0),(11,'restricted',NULL,2,2,'<p>This article is restricted</p>',1,NULL,'Restricted article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,1,NULL,NULL,'Restricted article',0);
 /*!40000 ALTER TABLE `article` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +123,7 @@ CREATE TABLE `category` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Category';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='Category';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +172,7 @@ CREATE TABLE `contact` (
   `visits` int(20) DEFAULT NULL,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Contact';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='Contact';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,6 +181,7 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` VALUES (1,'system',NULL,4,1,NULL,1,'1968-12-10 00:00:00','System account','Cubo CMS',NULL,NULL,NULL,1,1,NULL,NULL,'Cubo CMS',NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,'Cubo CMS',0);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +207,7 @@ CREATE TABLE `country` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Country';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Country';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,7 +249,7 @@ CREATE TABLE `file` (
   `visits` int(20) DEFAULT NULL,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='File';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='File';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +283,7 @@ CREATE TABLE `language` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Language';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Language';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +317,7 @@ CREATE TABLE `locale` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Locale';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Locale';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +351,7 @@ CREATE TABLE `log` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Log';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Log';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -383,7 +385,7 @@ CREATE TABLE `menu` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Menu';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Menu';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +419,7 @@ CREATE TABLE `mimetype` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Mime Type';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Mime Type';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -451,7 +453,7 @@ CREATE TABLE `module` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Module';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Module';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -485,7 +487,7 @@ CREATE TABLE `option` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Menu Option';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Menu Option';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -519,7 +521,7 @@ CREATE TABLE `plugin` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Plugin';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Plugin';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,6 +530,7 @@ CREATE TABLE `plugin` (
 
 LOCK TABLES `plugin` WRITE;
 /*!40000 ALTER TABLE `plugin` DISABLE KEYS */;
+INSERT INTO `plugin` VALUES (1,'content',1,1,'1968-12-10 00:00:00','Replaces content tags with matching values',NULL,NULL,'1968-12-10 00:00:00',1,1,'Content Plugin'),(2,'module',1,1,'1968-12-10 00:00:00','Replaces positions with applied modules',NULL,NULL,'1968-12-10 00:00:00',1,1,'Module Plugin'),(3,'head',1,1,'1968-12-10 00:00:00','Replaces head section in document',NULL,NULL,'1968-12-10 00:00:00',1,0,'Head Plugin'),(4,'message',1,1,'1968-12-10 00:00:00','Replaces message section showing queued messages',NULL,NULL,'1968-12-10 00:00:00',1,0,'Message Plugin');
 /*!40000 ALTER TABLE `plugin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,7 +556,7 @@ CREATE TABLE `position` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Position';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Position';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +591,7 @@ CREATE TABLE `role` (
   PRIMARY KEY (`#`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='User Role';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='User Role';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -624,7 +627,7 @@ CREATE TABLE `status` (
   PRIMARY KEY (`#`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Status';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='Status';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -663,7 +666,7 @@ CREATE TABLE `template` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Template';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='Template';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -672,7 +675,7 @@ CREATE TABLE `template` (
 
 LOCK TABLES `template` WRITE;
 /*!40000 ALTER TABLE `template` DISABLE KEYS */;
-INSERT INTO `template` VALUES (1,'default',NULL,1,1,'<!DOCTYPE html>\n<html lang=\"<cubo:param name=\'language\' />\" itemscope itemtype=\"https://schema.org/WebPage\">\n<head>\n	<title itemprop=\"name headline\"><cubo:param name=\'site-name\' /></title>\n	<base itemprop=\"url\" href=\"<cubo:param name=\'base-url\' />/admin\" />\n	<meta charset=\"utf-8\" />\n	<meta name=\"application_name\" content=\"<cubo:param name=\'site-name\' />\" />\n	<meta name=\"generator\" content=\"<cubo:param name=\'generator\' />\" />\n	<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,shrink-to-fit=no\" />\n	<link href=\"/vendor/font-awesome/4.7.0/css/font-awesome.min.css\" rel=\"stylesheet\" />\n	<link rel=\"stylesheet\" href=\"/theme/<cubo:param name=\'theme\' />/?stylesheet&minify\" />\n	<link rel=\"stylesheet\" href=\"/template/<cubo:param name=\'template\' />/?stylesheet&minify\" />\n	<link rel=\"icon\" type=\"image/png\" href=\"/vendor/cubo-cms/cubo-b192.png\" />\n	<script src=\"/vendor/jquery/3.2.1/js/jquery.min.js\"></script>\n	<script src=\"/vendor/popper.js/1.12.3/js/popper.min.js\"></script>\n	<script src=\"/vendor/tether/1.3.3/js/tether.min.js\"></script>\n    <script src=\"/vendor/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js\"></script>\n</head>\n<body class=\"has-fixed-nav\">\n	<nav id=\"navigation\" class=\"navbar navbar-toggleable-md navbar-dark bg-primary text-inverse fixed-top\">\n		<section class=\"container d-flex flex-nowrap\" id=\"menu-content\" role=\"menu\">\n			<button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#menu\" aria-controls=\"menu\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><i class=\"fa fa-bars\"></i></button>\n			<a class=\"navbar-brand\" href=\"/\"><img class=\"brand-logo\" src=\"<cubo:param name=\'brand-logo\' />\" /><span class=\"brand-name\"><cubo:param name=\'brand-name\' /></span></a>\n		</section>\n	</nav>\n	<header id=\"header\">\n		<section class=\"container\" id=\"header-content\" role=\"info\">\n			<cubo:module position=\"header\" />\n		</section>\n	</header>\n	<section id=\"message\">\n		<section class=\"container\" id=\"message-content\" role=\"message\">\n			<cubo:message />\n		</div>\n	</section>\n	<main id=\"main\">\n		<section class=\"container\" id=\"main-content\" role=\"main\">\n			<cubo:content />\n		</section>\n	</main>\n	<footer id=\"footer\" class=\"bg-inverse fixed-bottom\">\n		<section class=\"container\" id=\"footer-content\" role=\"info\">\n			<cubo:module name=\"footer\" />\n		</section>\n	</footer>\n</body>\n</html>','1968-12-10 00:00:00','Default Cubo CMS template',NULL,NULL,'1968-12-10 00:00:00',1,NULL,1,'@import url(\'https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab|Roboto+Condensed|Exo\');\n\n/* Customizations */\n\nbody {\n	font-family: \'Roboto\',sans-serif;\n}\n\nbody.has-fixed-nav {\n	margin-top: 4rem;\n}\n.navbar {\n	flex-wrap: nowrap;\n}\n.navbar.fixed-top {\n	height: 4rem;\n}\n.navbar-brand .brand-logo {\n	display: inline-block;\n	max-height: 3rem;\n	-webkit-transition: -webkit-transform .5s ease-in-out;\n	transition: transform .5s ease-in-out;\n}\n.navbar-brand:hover .brand-logo {\n	-webkit-transform: rotate(360deg);\n	transform: rotate(360deg);\n}\n.navbar-brand .brand-name {\n	font-family: \'Exo\',\'Roboto\',sans-serif;\n	padding-left: .5rem;\n	vertical-align: middle;\n	font-size: 1.5rem;\n}\n\nh1, h2, h3, h4, h5, h6 {\n	font-family: \'Roboto Slab\',serif;\n}\n\n/* Minor stylistic adjustments */\n\nlabel {\n	margin: 0;\n	font-family: \'Roboto Condensed\',sans-serif;\n	font-size: small;\n	font-style: italic;\n}\ntextarea {\n	padding-top: calc(.375rem + 1px);\n}\ntextarea.text-html {\n	font-family: monospace;\n}\nbutton {\n	cursor: pointer;\n}\nfigure {\n	margin: .125rem;\n}\nfigcaption {\n	font-size: smaller;\n	font-style: italic;\n	text-align: center;\n}\nselect.form-control-sm {\n	height: calc(1.8125rem + 2px) !important;\n}\n.custom-file-control:before {\n	content: \"\\f002\" !important;\n	font-family: FontAwesome !important;\n	font-size: 1rem;\n	font-style: normal;\n	background: #ff7518;\n	border: none;\n}\n\n.img-selectable img {\n	opacity: .75;\n	-webkit-opacity: .75;\n}\n.img-selectable:hover {\n	cursor: pointer;\n}\n.img-selectable:hover img {\n	opacity: 1;\n	-webkit-opacity: 1;\n}\n\n@media(min-width: 992px) {\n	.navbar-toggleable-md .navbar-collapse {\n		display: -webkit-box!important;\n		display: -webkit-flex!important;\n		display: -ms-flexbox!important;\n		display: flex!important;\n		width: 100%;\n	}\n	.navbar-toggleable-md .navbar-toggler {\n		display: none;\n	}\n}\n\n[data-toggle=collapse] {\n	text-decoration: none;\n	display: flex;\n}\n[data-toggle=collapse][aria-expanded=false]:after {\n	content: \'\\25BC\';\n	font-size: .5rem;\n	margin: 0 0 0 auto;\n	line-height: 1.4rem;\n}\n[data-toggle=collapse][aria-expanded=true]:after {\n	content: \'\\25B2\';\n	font-size: .5rem;\n	margin: 0 0 0 auto;\n	line-height: 1.4rem;\n}\n\n.align-middle {\n	align-self: center;\n}\n.btn-sm, .btn-group-sm > .btn {\n	margin: 0 .25rem;\n}\n.grid-columns {\n	display: grid;\n	grid-auto-columns: 1fr;\n	grid-auto-flow: column;\n	grid-column-gap: .5rem;\n}\n.grid-wrap-8 {\n	display: grid;\n	grid-template-columns: repeat(8,1fr);\n}\n.grid-column-2 {\n	grid-column: span 2;\n}\n.row-header {\n	border-top: solid 1px silver;\n	border-bottom: solid 1px silver;\n	padding-top: .5rem;\n	padding-bottom: .5rem;\n}\n.row-body {\n	border-bottom: solid 1px silver;\n	padding-top: .5rem;\n	padding-bottom: .5rem;\n}\n.grid-rows {\n	display: grid;\n	grid-auto-rows: auto;\n	grid-auto-flow: row;\n	grid-column-gap: .5rem;\n}','Default');
+INSERT INTO `template` VALUES (1,'default','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"3\",\"show_tags\":\"-1\",\"show_date\":\"4\",\"show_image\":\"3\",\"position_image\":\"2\",\"show_info\":\"-1\",\"position_info\":\"3\",\"show_readmore\":\"1\"}',1,1,'<!DOCTYPE html>\n<html lang=\"<cubo:param name=\'language\' />\" itemscope itemtype=\"https://schema.org/WebPage\">\n<head>\n	<title itemprop=\"name headline\"><cubo:param name=\'title\' /></title>\n	<base itemprop=\"url\" href=\"<cubo:param name=\'base-url\' />/admin\" />\n	<meta charset=\"utf-8\" />\n	<meta name=\"application_name\" content=\"<cubo:param name=\'site-name\' />\" />\n	<meta name=\"generator\" content=\"<cubo:param name=\'generator\' />\" />\n	<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,shrink-to-fit=no\" />\n	<link href=\"/vendor/font-awesome/4.7.0/css/font-awesome.min.css\" rel=\"stylesheet\" />\n	<link rel=\"stylesheet\" href=\"/theme/stylesheet/<cubo:param name=\'theme\' />?minify\" />\n	<link rel=\"stylesheet\" href=\"/template/stylesheet/<cubo:param name=\'template\' />?minify\" />\n	<link rel=\"icon\" type=\"image/png\" href=\"/vendor/cubo-cms/cubo-b192.png\" />\n	<script src=\"/vendor/jquery/3.2.1/js/jquery.min.js\"></script>\n	<script src=\"/vendor/popper.js/1.12.3/js/popper.min.js\"></script>\n	<script src=\"/vendor/tether/1.3.3/js/tether.min.js\"></script>\n    <script src=\"/vendor/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js\"></script>\n</head>\n<body class=\"has-fixed-nav\">\n	<nav id=\"navigation\" class=\"navbar navbar-toggleable-md navbar-dark bg-primary text-inverse fixed-top\">\n		<section class=\"container d-flex flex-nowrap\" id=\"menu-content\" role=\"menu\">\n			<button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#menu\" aria-controls=\"menu\" aria-expanded=\"false\" aria-label=\"Toggle navigation\"><i class=\"fa fa-bars\"></i></button>\n			<a class=\"navbar-brand\" href=\"/\"><img class=\"brand-logo\" src=\"<cubo:param name=\'brand-logo\' />\" /><span class=\"brand-name\"><cubo:param name=\'brand-name\' /></span></a>\n		</section>\n	</nav>\n	<header id=\"header\">\n		<section class=\"container\" id=\"header-content\" role=\"info\">\n			<cubo:module position=\"header\" />\n		</section>\n	</header>\n	<section id=\"message\">\n		<section class=\"container\" id=\"message-content\" role=\"message\">\n			<cubo:message />\n		</div>\n	</section>\n	<main id=\"main\">\n		<section class=\"container\" id=\"main-content\" role=\"main\">\n			<cubo:content />\n		</section>\n	</main>\n	<footer id=\"footer\" class=\"bg-inverse fixed-bottom\">\n		<section class=\"container\" id=\"footer-content\" role=\"info\">\n			<cubo:module name=\"footer\" />\n		</section>\n	</footer>\n</body>\n</html>','1968-12-10 00:00:00','Default Cubo CMS template',NULL,NULL,'1968-12-10 00:00:00',1,NULL,1,'@import url(\'https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab|Roboto+Condensed|Exo\');\n\n/* Customizations */\n\nbody {\n	font-family: \'Roboto\',sans-serif;\n}\n\nbody.has-fixed-nav {\n	margin-top: 4rem;\n}\n.navbar {\n	flex-wrap: nowrap;\n}\n.navbar.fixed-top {\n	height: 4rem;\n}\n.navbar-brand .brand-logo {\n	display: inline-block;\n	max-height: 3rem;\n	-webkit-transition: -webkit-transform .5s ease-in-out;\n	transition: transform .5s ease-in-out;\n}\n.navbar-brand:hover .brand-logo {\n	-webkit-transform: rotate(360deg);\n	transform: rotate(360deg);\n}\n.navbar-brand .brand-name {\n	font-family: \'Exo\',\'Roboto\',sans-serif;\n	padding-left: .5rem;\n	vertical-align: middle;\n	font-size: 1.5rem;\n}\n\nh1, h2, h3, h4, h5, h6 {\n	font-family: \'Roboto Slab\',serif;\n}\n\n/* Minor stylistic adjustments */\n\nlabel {\n	margin: 0;\n	font-family: \'Roboto Condensed\',sans-serif;\n	font-size: small;\n	font-style: italic;\n}\ntextarea {\n	padding-top: calc(.375rem + 1px);\n}\ntextarea.text-html {\n	font-family: monospace;\n}\nbutton {\n	cursor: pointer;\n}\nfigure {\n	margin: .125rem;\n}\nfigcaption {\n	font-size: smaller;\n	font-style: italic;\n	text-align: center;\n}\nselect.form-control-sm {\n	height: calc(1.8125rem + 2px) !important;\n}\n.custom-file-control:before {\n	content: \"\\f002\" !important;\n	font-family: FontAwesome !important;\n	font-size: 1rem;\n	font-style: normal;\n	background: #ff7518;\n	border: none;\n}\n\n.img-selectable img {\n	opacity: .75;\n	-webkit-opacity: .75;\n}\n.img-selectable:hover {\n	cursor: pointer;\n}\n.img-selectable:hover img {\n	opacity: 1;\n	-webkit-opacity: 1;\n}\n\n@media(min-width: 992px) {\n	.navbar-toggleable-md .navbar-collapse {\n		display: -webkit-box!important;\n		display: -webkit-flex!important;\n		display: -ms-flexbox!important;\n		display: flex!important;\n		width: 100%;\n	}\n	.navbar-toggleable-md .navbar-toggler {\n		display: none;\n	}\n}\n\n[data-toggle=collapse] {\n	text-decoration: none;\n	display: flex;\n}\n[data-toggle=collapse][aria-expanded=false]:after {\n	content: \'\\25BC\';\n	font-size: .5rem;\n	margin: 0 0 0 auto;\n	line-height: 1.4rem;\n}\n[data-toggle=collapse][aria-expanded=true]:after {\n	content: \'\\25B2\';\n	font-size: .5rem;\n	margin: 0 0 0 auto;\n	line-height: 1.4rem;\n}\n\n.align-middle {\n	align-self: center;\n}\n.btn-sm, .btn-group-sm > .btn {\n	margin: 0 .25rem;\n}\n.grid-columns {\n	display: grid;\n	grid-auto-columns: 1fr;\n	grid-auto-flow: column;\n	grid-column-gap: .5rem;\n}\n.grid-wrap-8 {\n	display: grid;\n	grid-template-columns: repeat(8,1fr);\n}\n.grid-column-2 {\n	grid-column: span 2;\n}\n.row-header {\n	border-top: solid 1px silver;\n	border-bottom: solid 1px silver;\n	padding-top: .5rem;\n	padding-bottom: .5rem;\n}\n.row-body {\n	border-bottom: solid 1px silver;\n	padding-top: .5rem;\n	padding-bottom: .5rem;\n}\n.grid-rows {\n	display: grid;\n	grid-auto-rows: auto;\n	grid-auto-flow: row;\n	grid-column-gap: .5rem;\n}','Default');
 /*!40000 ALTER TABLE `template` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -700,7 +703,7 @@ CREATE TABLE `theme` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Theme';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='Theme';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -735,7 +738,7 @@ CREATE TABLE `timezone` (
   `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='Time Zone';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Time Zone';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,7 +784,7 @@ CREATE TABLE `user` (
   `verified` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='User';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='User';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -790,7 +793,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'nobody',0,1,NULL,1,NULL,'1968-12-10 00:00:00','No user',NULL,NULL,0,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,0,1,'Nobody',0),(1,'system',4,1,NULL,1,NULL,'1968-12-10 00:00:00','System user',NULL,NULL,0,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,0,1,'System',0),(2,'admin',4,1,NULL,0,1,'1968-12-10 00:00:00','Administrator',NULL,NULL,1,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,6,1,'Administrator',1);
+INSERT INTO `user` VALUES (0,'nobody',0,1,NULL,1,NULL,'1968-12-10 00:00:00','No user',NULL,NULL,0,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,0,1,'Nobody',0),(1,'system',4,1,NULL,1,1,'1968-12-10 00:00:00','System user',NULL,NULL,0,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,0,1,'System',0),(2,'admin',4,1,NULL,0,2,'1968-12-10 00:00:00','Administrator',NULL,NULL,1,NULL,NULL,0,NULL,NULL,NULL,'1968-12-10 00:00:00',1,6,1,'Administrator',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -803,4 +806,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-12 20:14:07
+-- Dump completed on 2019-02-15  0:27:16
