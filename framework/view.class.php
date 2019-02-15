@@ -24,7 +24,7 @@ class View {
 		// Retrieve the template
 		try {
 			if(class_exists(__CUBO__.'\\Template')) {
-				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'name,body');
+				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'`@attribute`,name,body');
 				// Save template name as parameter
 				Configuration::setParameter('template',$this->_Template->name);
 				// Save template attributes as global settings
