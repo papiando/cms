@@ -26,7 +26,7 @@ final class Application {
 		// Start session
 		self::$_Session = new Session;
 		// Call router
-		self::$_Router = new Router($_SERVER['REQUEST_URI']);
+		self::$_Router = new Router(Configuration::setParameter('uri',$_SERVER['REQUEST_URI']));
 		// Read route, controller, method, and name
 		$controller = __CUBO__.'\\'.self::$_Router->getController().'controller';
 		$method = self::$_Router->getMethod();

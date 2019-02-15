@@ -9,7 +9,6 @@ class Router {
 	private $method;
 	private $name;
 	private $route;
-	private $uri;
 	
 	// Constructor of Router class parses URI
 	public function __construct($uri) {
@@ -51,10 +50,8 @@ class Router {
 	public function parse($uri) {
 		// Remove any trailing slashes
 		$uri = urldecode(trim($uri,'/'));
-		// Save the provided URI
-		$this->uri = $uri;
 		// Split URI
-		$uri_parts = explode('?',$this->uri);
+		$uri_parts = explode('?',$uri);
 		$uri_parts[] = '';
 		$path_parts = explode('/',$uri_parts[0]);
 		// Define accepted routes
@@ -99,6 +96,12 @@ class Router {
 			// Remainder is optional name
 			$this->name = $this->name ?? $part;
 		}
+	}
+	
+	// Redirect function; by default supplied a 301 Moved Permanently response
+	public static function redirect($location,$response = 301) {
+		Session::set('http_response',$response);
+		exit(header("Location: {$location}"));
 	}
 }
 ?>

@@ -29,6 +29,13 @@ class Session {
 		return $_SESSION[$property] ?? $default ?? null;
 	}
 	
+	// Returns all waiting messages
+	public static function getMessages() {
+		$messages = $_SESSION['messages'] ?? [];
+		unset($_SESSION['messages']);
+		return $messages;
+	}
+	
 	// Returns the user id of the currently logged in user, or NOBODY if not logged in
 	public static function getUser() {
 		return (isset($_SESSION['user']) ? $_SESSION['user']->id : USER_NOBODY);
@@ -37,6 +44,11 @@ class Session {
 	// Returns the role id of the currently logged in user, or GUEST if not logged in
 	public static function getRole() {
 		return (isset($_SESSION['user']) ? $_SESSION['user']->role : ROLE_GUEST);
+	}
+	
+	// Returns true if there are messages waiting
+	public static function hasMessage() {
+		return isset($_SESSION['messages']) && count($_SESSION['messages']);
 	}
 	
 	// Return session ID
@@ -57,6 +69,12 @@ class Session {
 	// Store session property
 	public static function set($property,$value) {
 		return $_SESSION[$property] = $value;
+	}
+	
+	// Set a message
+	public static function setMessage($message) {
+		if(!isset($_SESSION['messages'])) $_SESSION['messages'] = [];
+		$_SESSION['messages'][] = $message;
 	}
 	
 	// Start the session; determine whether it is a new session

@@ -113,11 +113,23 @@ abstract class Controller {
 					// Could not retrieve item, check again to see if it exists
 					$result = self::$_Model::get(Application::getRouter()->getName(),$this->columns);
 					if($result) {
+						// The item is found; determine if it is published
 						if(isset($result->status) && $result->status == STATUS_PUBLISHED) {
-							// The item requires the user to login
-							$model = ucfirst(Application::getRouter()->getController());
-							$name = Application::getRouter()->getName();
-							throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"{$model} '{$name}' requires authentication"]);
+							// The item is published; visitor does not have access
+							if(Session::isGuest()) {
+								// No user is logged in; redirect to login page
+								$model = ucfirst(Application::getRouter()->getController());
+								$name = Application::getRouter()->getName();
+								Session::setMessage(array('alert'=>'info','icon'=>'exclamation','message'=>"{$model} '{$name}' requires user access"));
+								Session::set('login_redirect',Configuration::getParameter('uri'));
+								Router::redirect('/user/login',403);
+							} else {
+								// User is logged in, so does not have required permissions
+								throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>3,'response'=>405,'message'=>"User does not have access to {$model} '{$name}'"]);
+								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','text'=>"This user has no access to {$this->class}"));
+								//Session::set('login_redirect',Application::getParam('uri'));
+								//Router::redirect('/user?noaccess',403);
+							}
 						} else {
 							// The item is not published
 							$model = ucfirst(Application::getRouter()->getController());
