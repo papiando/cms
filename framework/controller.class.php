@@ -5,8 +5,14 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 
 abstract class Controller {
 	protected static $_Model;
+	protected static $_Router;
 	protected static $_View;
 	protected $columns = "*";
+	
+	// Constructor saves router
+	public function __construct($_Router = null) {
+		self::$_Router = $_Router ?? Application::getRouter();
+	}
 	
 	// Default access levels
 	protected static $_Authors = [ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR];
@@ -23,6 +29,11 @@ abstract class Controller {
 	// Returns true if the model includes a status property
 	private function containsStatusProperty() {
 		return $this->columns == "*" || !(strpos($this->columns,'status') === false);
+	}
+	
+	// Returns router
+	public function getRouter() {
+		return self::$_Router;
 	}
 	
 	// Returns filter for list permission
@@ -52,7 +63,7 @@ abstract class Controller {
 	}
 	
 	public function all() {
-		$model = __CUBO__.'\\'.Application::getRouter()->getController();
+		$model = __CUBO__.'\\'.self::getRouter()->getController();
 		try {
 			if(class_exists($model)) {
 				self::$_Model = new $model;
@@ -61,11 +72,11 @@ abstract class Controller {
 					return $this->render($_Data);
 				} else {
 					// No items returned, must be empty data set
-					$model = Application::getRouter()->getController();
+					$model = self::getRouter()->getController();
 					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>2,'response'=>405,'message'=>"Model '{$model}' returned no data"]);
 				}
 			} else {
-				$model = Application::getRouter()->getController();
+				$model = self::getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
 			}
 		} catch(Error $_Error) {
@@ -81,8 +92,8 @@ abstract class Controller {
 	
 	// Call view with requested format
 	protected function render($_Data) {
-		$view = __CUBO__.'\\'.Application::getRouter()->getController().'view';
-		$format = Application::getRouter()->getFormat();
+		$view = __CUBO__.'\\'.self::getRouter()->getController().'view';
+		$format = self::getRouter()->getFormat();
 		if(class_exists($view)) {
 			if(method_exists($view,$format)) {
 				// Send retrieved data to view and return output
@@ -90,41 +101,43 @@ abstract class Controller {
 				return self::$_View->$format($_Data);
 			} else {
 				// Method does not exist for this view
-				$view = Application::getRouter()->getController();
+				$view = self::getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not have the method '{$format}' defined"]);
 			}
 		} else {
 			// View not found
-			$view = Application::getRouter()->getController();
+			$view = self::getRouter()->getController();
 			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not exist"]);
 		}
 		return false;
 	}
 	
 	public function view() {
-		$model = __CUBO__.'\\'.Application::getRouter()->getController();
+		$model = __CUBO__.'\\'.self::getRouter()->getController();
 		try {
 			if(class_exists($model)) {
 				self::$_Model = new $model;
-				$_Data = self::$_Model::get(Application::getRouter()->getName(),$this->columns,$this->requireViewPermission());
+				$_Data = self::$_Model::get(self::getRouter()->getName(),$this->columns,$this->requireViewPermission());
 				if($_Data) {
 					return $this->render($_Data);
 				} else {
 					// Could not retrieve item, check again to see if it exists
-					$result = self::$_Model::get(Application::getRouter()->getName(),$this->columns);
+					$result = self::$_Model::get(self::getRouter()->getName(),$this->columns);
 					if($result) {
 						// The item is found; determine if it is published
 						if(isset($result->status) && $result->status == STATUS_PUBLISHED) {
 							// The item is published; visitor does not have access
 							if(Session::isGuest()) {
 								// No user is logged in; redirect to login page
-								$model = ucfirst(Application::getRouter()->getController());
-								$name = Application::getRouter()->getName();
+								$model = ucfirst(self::getRouter()->getController());
+								$name = self::getRouter()->getName();
 								Session::setMessage(array('alert'=>'info','icon'=>'exclamation','message'=>"{$model} '{$name}' requires user access"));
 								Session::set('login_redirect',Configuration::getParameter('uri'));
 								Router::redirect('/user/login',403);
 							} else {
 								// User is logged in, so does not have required permissions
+								$model = ucfirst(self::getRouter()->getController());
+								$name = self::getRouter()->getName();
 								throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>3,'response'=>405,'message'=>"User does not have access to {$model} '{$name}'"]);
 								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','text'=>"This user has no access to {$this->class}"));
 								//Session::set('login_redirect',Application::getParam('uri'));
@@ -132,19 +145,19 @@ abstract class Controller {
 							}
 						} else {
 							// The item is not published
-							$model = ucfirst(Application::getRouter()->getController());
-							$name = Application::getRouter()->getName();
+							$model = ucfirst(self::getRouter()->getController());
+							$name = self::getRouter()->getName();
 							throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"{$model} '{$name}' is no longer available"]);
 						}
 					} else {
 						// The item really does not exist
-						$model = ucfirst(Application::getRouter()->getController());
-						$name = Application::getRouter()->getName();
+						$model = ucfirst(self::getRouter()->getController());
+						$name = self::getRouter()->getName();
 						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"{$model} '{$name}' does not exist"]);
 					}
 				}
 			} else {
-				$model = Application::getRouter()->getController();
+				$model = self::getRouter()->getController();
 				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
 			}
 		} catch(Error $_Error) {
