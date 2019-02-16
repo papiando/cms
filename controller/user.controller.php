@@ -13,29 +13,70 @@ class UserController extends Controller {
 			http_response_code(Session::get('http_response'));
 			Session::delete('http_response');
 		}
-		// Call new router to login article
-		$_Router = new Router('/article/login');
-		$controller = __CUBO__.'\\'.$_Router->getController().'controller';
-		$method = $_Router->getMethod();
-		try {
-			if(class_exists($controller)) {
-				if(method_exists($controller,$method)) {
-					// Call the method and show the output
-					$_Controller = new $controller($_Router);
-					$output = $_Controller->$method();
-					return $output;
+		// Determine if login form is filled in
+		if($_POST && isset($_POST['user']) && isset($_POST['password'])) {
+			$_User = User::getLogin(strtolower($_POST['user']));
+			try {
+				if($_User) {
+					if($_User->blocked) {
+						// User is blocked
+						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"User '{$_POST['user']}' is blocked (denied access)"]);
+					} elseif($_User->status != STATUS_PUBLISHED) {
+						// User is not published
+						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"User '{$_POST['user']}' is not published (disabled)"]);
+					} elseif(!$_User->verified) {
+						// User is not verified
+						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"User '{$_POST['user']}' is not verified yet"]);
+					} elseif(!hash_equals($_User->password,crypt($_POST['password'],$_User->password))) {
+						// Password is incorrect
+						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"User '{$_POST['user']}' supplied a wrong password"]);
+					} else {
+						// User authenticated, now first remove information
+						unset($_User->password);
+						// Save user data in session
+						Session::set('user',$_User);
+						Session::setMessage(array('alert'=>'success','icon'=>'check','text'=>"Welcome {$_User->title}"));
+						if(Session::get('login-redirect')) {
+							$this->_Router::redirect(Session::get('login_redirect'));
+						} else {
+							$this->_Router::redirect('/'.(empty($this->_Router->getRoute()) ? '' : $this->_Router->getRoute().'/'));
+						}
+						$redirect = Session::get('login_redirect');
+						Router::redirect(Session::get('login_redirect'));
+						show($_User);
+					}
 				} else {
-					// Method does not exist for this controller
-					$controller = $_Router->getController();
-					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not have the method '{$method}' defined"]);
+					// User does not exist
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>2,'response'=>405,'message'=>"User '{$_POST['user']}' does not exist"]);
 				}
-			} else {
-				// Controller not found
-				$controller = $_Router->getController();
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not exist"]);
+			} catch(Error $_Error) {
+				$_Error->showMessage();
 			}
-		} catch(Error $_Error) {
-			$_Error->showMessage();
+		} else {
+			// Call new router to login article
+			$_Router = new Router('/article/login');
+			$controller = __CUBO__.'\\'.$_Router->getController().'controller';
+			$method = $_Router->getMethod();
+			try {
+				if(class_exists($controller)) {
+					if(method_exists($controller,$method)) {
+						// Call the method and show the output
+						$_Controller = new $controller($_Router);
+						$output = $_Controller->$method();
+						return $output;
+					} else {
+						// Method does not exist for this controller
+						$controller = $_Router->getController();
+						throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not have the method '{$method}' defined"]);
+					}
+				} else {
+					// Controller not found
+					$controller = $_Router->getController();
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not exist"]);
+				}
+			} catch(Error $_Error) {
+				$_Error->showMessage();
+			}
 		}
 		return false;
 	}
