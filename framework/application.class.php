@@ -27,10 +27,10 @@ final class Application {
 		self::$_Session = new Session;
 		// Call router; save URI, URL, and Route as application parameters
 		self::$_Router = new Router(Configuration::setParameter('uri',$_SERVER['REQUEST_URI']));
-		if(empty(self::$_Router->getRoute()['path']))
+		if(empty(self::$_Router->getRoute()))
 			Configuration::setParameter('route',Configuration::getDefault('route',''));
 		else
-			Configuration::setParameter('route',self::$_Router->getRoute()['path'].'/');
+			Configuration::setParameter('route',self::$_Router->getRoute().'/');
 		Configuration::setParameter('url',__BASE__.current(explode('?',$_SERVER['REQUEST_URI'])));
 		// Set other application parameters
 		Configuration::setParameter('base-url',__BASE__);
