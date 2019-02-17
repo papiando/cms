@@ -18,5 +18,5 @@ if(true || isset($_GET['debug'])) {
 }
 
 // Auto-start Cubo framework
-require_once('.autoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'.autoload.php');
 ?>
