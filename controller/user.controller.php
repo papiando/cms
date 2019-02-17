@@ -34,7 +34,7 @@ class UserController extends Controller {
 						// User authenticated, now first remove information
 						unset($_User->password);
 						// Save user data in session
-						Session::set('user',$_User);
+						Session::set('_User',$_User);
 						Session::setMessage(array('alert'=>'success','icon'=>'check','text'=>"Welcome {$_User->title}"));
 						if(Session::get('login-redirect')) {
 							$this->_Router::redirect(Session::get('login_redirect'));

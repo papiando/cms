@@ -31,24 +31,24 @@ class Session {
 	
 	// Returns all waiting messages
 	public static function getMessages() {
-		$messages = $_SESSION['messages'] ?? [];
-		unset($_SESSION['messages']);
+		$messages = $_SESSION['_Message'] ?? [];
+		unset($_SESSION['_Message']);
 		return $messages;
 	}
 	
 	// Returns the user id of the currently logged in user, or NOBODY if not logged in
 	public static function getUser() {
-		return (isset($_SESSION['user']) ? $_SESSION['user']->id : USER_NOBODY);
+		return (isset($_SESSION['_User']) ? $_SESSION['_User']->id : USER_NOBODY);
 	}
 	
 	// Returns the role id of the currently logged in user, or GUEST if not logged in
 	public static function getRole() {
-		return (isset($_SESSION['user']) ? $_SESSION['user']->role : ROLE_GUEST);
+		return (isset($_SESSION['_User']) ? $_SESSION['_User']->role : ROLE_GUEST);
 	}
 	
 	// Returns true if there are messages waiting
 	public static function hasMessage() {
-		return isset($_SESSION['messages']) && count($_SESSION['messages']);
+		return isset($_SESSION['_Message']) && count($_SESSION['messages']);
 	}
 	
 	// Return session ID
@@ -58,12 +58,12 @@ class Session {
 	
 	// Returns true if user is logged in
 	public static function isRegistered() {
-		return self::exists('user');
+		return self::exists('_User');
 	}
 	
 	// Returns true if user is not logged in
 	public static function isGuest() {
-		return !self::exists('user');
+		return !self::exists('_User');
 	}
 	
 	// Store session property
@@ -73,8 +73,8 @@ class Session {
 	
 	// Set a message
 	public static function setMessage($message) {
-		if(!isset($_SESSION['messages'])) $_SESSION['messages'] = [];
-		$_SESSION['messages'][] = $message;
+		if(!isset($_SESSION['_Message'])) $_SESSION['_Message'] = [];
+		$_SESSION['_Message'][] = $message;
 	}
 	
 	// Start the session; determine whether it is a new session
@@ -85,10 +85,11 @@ class Session {
 		// See if there is a session cookie
 		$newSession = !isset($_COOKIE[$session_name]);
 		// Start the session
+		session_set_cookie_params($session_lifetime,'/');
 		session_start();
 		$_SESSION['lastaccessed'] = time();
 		// Set session cookie life time
-		setcookie(session_name(),session_id(),$_SESSION['lastaccessed']+$session_lifetime);
+		setcookie(session_name(),session_id(),$_SESSION['lastaccessed']+$session_lifetime,'/');
 		self::$lifetime = $session_lifetime;
 		$_SESSION['expires'] = time() + $session_lifetime;
 		// Retrieve and store session id
