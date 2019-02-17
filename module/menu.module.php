@@ -4,13 +4,26 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class MenuModule extends Addon {
+	// Returns filter for view permission
+	private static function requireViewPermission() {
+		$filter = [];
+		if(Session::isAdmin())
+			$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.','.ACCESS_ADMIN.')';
+		elseif(Session::isRegistered())
+			$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.')';
+		else
+			$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_GUEST.')';
+		$filter[] = "`status`=".STATUS_PUBLISHED;
+		return implode(' AND ',$filter) ?? '1';
+	}
+	
 	// Show options
 	public static function showOptions($_Menu) {
 		$html = '';
 		if($_Menu && !empty($_Menu->{'@option'})) {
 			$options = json_decode($_Menu->{'@option'});
 			foreach($options as $option) {
-				$_Option = Option::get($option,"`@attribute`,`@option`,accesslevel,title");
+				$_Option = Option::get($option,"`@attribute`,`@option`,accesslevel,title",self::requireViewPermission());
 				if($_Option) {
 					$_Attribute = json_decode($_Option->{'@attribute'});
 					empty($html) && $html = '<ul class="navbar-nav">';
