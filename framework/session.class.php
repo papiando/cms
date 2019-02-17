@@ -61,6 +61,11 @@ class Session {
 		return self::exists('_User') && in_array(self::get('_User')->role,[ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
 	}
 	
+	// Returns true if the item is accessible for the current user
+	public static function isAccessible($includeNone = false,$excludeSelf = false) {
+		return "`status`=".STATUS_PUBLISHED.($excludeSelf ? " AND `id`<>".$excludeSelf : "").($includeNone ? " OR `accesslevel`=".ACCESS_NONE : " AND `accesslevel`<>".ACCESS_NONE);
+	}
+	
 	// Returns true if user is not logged in
 	public static function isGuest() {
 		return !self::exists('_User');
