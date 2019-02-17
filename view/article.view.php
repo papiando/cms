@@ -40,7 +40,7 @@ class ArticleView extends View {
 	// Show the item image
 	public function showImage(&$_Data) {
 		$html = '';
-		if($this->getAttribute('show_image') && $_Image = Image::get($_Data->image,'name,title')) {
+		if($this->getAttribute('show_image') && $_Data->image && $_Image = Image::get($_Data->image,'name,title')) {
 			$html = '<figure class="article-image img-container" itemProp="image" itemscope itemtype="https://schema.org/ImageObject"><img class="img-fluid" src="'.__BASE__.'/image/'.urlencode($_Image->name).'" alt="'.htmlspecialchars($_Image->title,ENT_QUOTES|ENT_HTML5).'" /><meta itemProp="url" content="'.__BASE__.'/image/'.urlencode($_Image->name).'" /></figure>';
 		}
 		return $html;
