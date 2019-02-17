@@ -5,8 +5,6 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 
 class View {
 	protected $_Attribute;
-	protected $_Plugin;
-	protected $_Template;
 	
 	// Get attribute
 	public function getAttribute($attribute) {
@@ -21,20 +19,13 @@ class View {
 		// Store the article attributes
 		if(empty($this->_Attribute))
 			!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
-		// Retrieve the template
-		try {
-			if(class_exists(__CUBO__.'\\Template')) {
-				$this->_Template = Template::get(empty($_Data->template) ? Configuration::getDefault('template','default') : $_Data->template,'`@attribute`,name,body');
-				// Save template name as parameter
-				Configuration::setParameter('template',$this->_Template->name);
-				// Save template attributes as global settings
-				!empty($this->_Template->{'@attribute'}) && Configuration::set('_Attribute',json_decode($this->_Template->{'@attribute'},true));
-			} else {
-				$model = 'template';
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
-			}
-		} catch(Error $_Error) {
-			$_Error->showMessage();
+		// Retrieve the template; we need the template attributes as they are global settings
+		$_Template = Template::get($_Data->template ?? Configuration::getDefault('template','default'),"`name`,`@attribute`");
+		if($_Template) {
+			// Save template name as parameter
+			Configuration::setParameter('template',$_Template->name);
+			// Save template attributes as global settings
+			!empty($_Template->{'@attribute'}) && Configuration::set('_Attribute',json_decode($_Template->{'@attribute'},true));
 		}
 		// Get the body of the article
 		if(is_array($_Data)) {
@@ -42,12 +33,9 @@ class View {
 		} else {
 			$html = $this->showItem($_Data);
 		}
-		// Render the template
-		$html = preg_replace("/<cubo:content\s*\/>/i",$html,$this->_Template->body);
-		Configuration::setParameter('template',$this->_Template->name);
 		// Render plugins
-		$this->_Plugin = Plugin::getAll();
-		foreach($this->_Plugin as &$_Plugin) {
+		$_Plugins = Plugin::getAll();
+		foreach($_Plugins as &$_Plugin) {
 			$plugin = __CUBO__.'\\'.$_Plugin->name.'plugin';
 			if(class_exists($plugin))
 				$html = $plugin::render($html);

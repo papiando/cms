@@ -9,7 +9,7 @@ class ContentPlugin extends Addon {
 		if($html) {
 			return preg_replace_callback("/<cubo:param\s+name\s*=\s*[\'\"]([^\'\"]+)[\'\"]\s*\/>/i",function($matches) { return Configuration::getParameter($matches[1]); },$html);
 		} else {
-			return $html;
+			return false;
 		}
 	}
 }

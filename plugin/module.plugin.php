@@ -27,7 +27,7 @@ class ModulePlugin extends Addon {
 		if($html) {
 			return preg_replace_callback("/<cubo:module\s+name\s*=\s*[\'\"]([^\'\"]+)[\'\"]\s+content\s*=\s*[\'\"]([^\'\"]*)[\'\"]\s*\/>/i",function($matches) { return self::loadModule($matches[1],$matches[2]); },$html);
 		} else {
-			return $html;
+			return false;
 		}
 	}
 }
