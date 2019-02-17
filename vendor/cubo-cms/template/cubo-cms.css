@@ -31,6 +31,26 @@ body.has-fixed-nav {
 	vertical-align: middle;
 	font-size: 1.5rem;
 }
+.navbar-user {
+	width: 3rem;
+	height: 3rem;
+	-webkit-transition: -webkit-transform 1s ease-in-out;
+	transition: transform 1s ease-in-out;
+}
+.navbar-user > *:first-child {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	font-size: 1.25rem;
+	background-color: rgba(255,255,255,.25);
+}
+.navbar-user:hover > *:first-child {
+	font-size: 1.5rem;
+}
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Roboto Slab',serif;
@@ -43,6 +63,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 .navbar-dark a:hover,.navbar-dark a:focus {
 	color: white;
+}
+.navbar-dark .dropdown-menu a {
+	color: inherit;
 }
 label {
 	margin: 0;
