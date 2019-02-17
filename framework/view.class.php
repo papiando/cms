@@ -33,6 +33,11 @@ class View {
 		} else {
 			$html = $this->showItem($_Data);
 		}
+		// Render plugins and return output
+		return $this->renderPlugins($html);
+	}
+	
+	public function renderPlugins($html) {
 		// Render plugins
 		$_Plugins = Plugin::getAll();
 		foreach($_Plugins as &$_Plugin) {
