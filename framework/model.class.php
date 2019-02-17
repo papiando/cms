@@ -3,7 +3,7 @@ namespace Cubo;
 
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
-abstract class Model {
+class Model {
 	protected static $_Database;
 	
 	// Return name of the class
