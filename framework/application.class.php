@@ -27,7 +27,6 @@ final class Application {
 		self::$_Session = new Session;
 		// Call router; save URI, URL, and Route as application parameters
 		self::$_Router = new Router(Configuration::setParameter('uri',$_SERVER['REQUEST_URI']));
-		Session::lastUri = $_SERVER['REQUEST_URI'];
 		if(empty(self::$_Router->getRoute()))
 			Configuration::setParameter('route',Configuration::getDefault('route',''));
 		else
