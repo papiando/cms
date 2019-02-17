@@ -6,6 +6,13 @@ defined('__CUBO__') || new \Exception("No use starting a class without an includ
 class UserModule extends Addon {
 	// Render user avatar
 	public static function render($_Params) {
+		// Check if show-user-module is turned on
+		if(Configuration::getParameter('show-user-module',SETTING_YES))
+			// Save this URI in session
+			Session::set('lastVisited',$_SERVER['REQUEST_URI']);
+		else
+			return false;
+		// Now render the rest
 		$html = '<div class="navbar-user dropdown">';
 		if(Session::isGuest()) {
 			$html .= '<a class="btn p-1" id="user-dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-lock fa-fw fa-lg"></i></a>';
