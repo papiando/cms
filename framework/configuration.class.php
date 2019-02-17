@@ -4,6 +4,7 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 // Define global constants
+define('ACCESS_ADMIN',5);
 define('ACCESS_ANY',-1);
 define('ACCESS_GUEST',3);
 define('ACCESS_NONE',0);

@@ -56,14 +56,19 @@ class Session {
 		return self::$id;
 	}
 	
-	// Returns true if user is logged in
-	public static function isRegistered() {
-		return self::exists('_User');
+	// Returns true if user is logged in as content manager
+	public static function isAdmin() {
+		return self::exists('_User') && in_array(self::get('_User')->role,[ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
 	}
 	
 	// Returns true if user is not logged in
 	public static function isGuest() {
 		return !self::exists('_User');
+	}
+	
+	// Returns true if user is logged in
+	public static function isRegistered() {
+		return self::exists('_User');
 	}
 	
 	// Store session property
