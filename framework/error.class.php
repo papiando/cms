@@ -35,7 +35,7 @@ class Error extends \Exception {
 			$this->_error->description .= "</table>";
 		}
 		empty($this->_error->response) || http_response_code($this->_error->response);
-		include('error.php');
+		include(__ROOT__.DS.'error.php');
 		die();
 	}
 }
