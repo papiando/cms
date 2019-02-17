@@ -132,7 +132,7 @@ class Controller {
 								$model = ucfirst($this->getRouter()->getController());
 								$name = $this->getRouter()->getName();
 								Session::setMessage(array('alert'=>'info','icon'=>'exclamation','message'=>"{$model} '{$name}' requires user access"));
-								Session::set('login_redirect',Configuration::getParameter('uri'));
+								Session::set('loginRedirect',Configuration::getParameter('uri'));
 								Router::redirect('/user/login',403);
 							} else {
 								// User is logged in, so does not have required permissions
@@ -140,7 +140,7 @@ class Controller {
 								$name = $this->getRouter()->getName();
 								throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>3,'response'=>405,'message'=>"User does not have access to {$model} '{$name}'"]);
 								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','text'=>"This user has no access to {$this->class}"));
-								//Session::set('login_redirect',Application::getParam('uri'));
+								//Session::set('loginRedirect',Application::getParam('uri'));
 								//Router::redirect('/user?noaccess',403);
 							}
 						} else {

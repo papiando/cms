@@ -41,6 +41,11 @@ final class Router {
 		return $this->route['path'];
 	}
 	
+	// Get parsed controller
+	public function getRoutePath() {
+		return empty($this->route['path']) ? '/' : '/'.$this->route['path'].'/';
+	}
+	
 	// Parse URI and determine routes
 	//   Routes are typically made up like /{route}/{controller}/{method}/{name}
 	//   Where both {route} and {method} may be omitted

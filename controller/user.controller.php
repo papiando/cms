@@ -13,6 +13,8 @@ class UserController extends Controller {
 			http_response_code(Session::get('http_response'));
 			Session::delete('http_response');
 		}
+		// Make sure the user module is not shown
+		Configuration::setParameter('show-user-module',SETTING_NO);
 		// Determine if login form is filled in
 		if($_POST && isset($_POST['user']) && isset($_POST['password'])) {
 			$_User = User::getLogin(strtolower($_POST['user']));
@@ -36,13 +38,11 @@ class UserController extends Controller {
 						// Save user data in session
 						Session::set('_User',$_User);
 						Session::setMessage(array('alert'=>'success','icon'=>'check','text'=>"Welcome {$_User->title}"));
-						if(Session::get('login-redirect')) {
-							$this->_Router::redirect(Session::get('login_redirect'));
+						if(Session::exists('loginRedirect')) {
+							$this->_Router::redirect(Session::get('loginRedirect') ?? $this->_Router::getRoutePath());
 						} else {
-							$this->_Router::redirect('/'.(empty($this->_Router->getRoute()) ? '' : $this->_Router->getRoute().'/'));
+							$this->_Router::redirect(Session::get('lastVisited') ?? $this->_Router::getRoutePath());
 						}
-						$redirect = Session::get('login_redirect');
-						Router::redirect(Session::get('login_redirect'));
 						show($_User);
 					}
 				} else {
@@ -79,6 +79,13 @@ class UserController extends Controller {
 			}
 		}
 		return false;
+	}
+	
+	// Method: logout
+	public function logout() {
+		Session::setMessage(array('alert'=>'info','icon'=>'exclamation','text'=>"See you later, {Session::get('_User')->title}"));
+		Session::delete('_User');
+		Router::redirect(Session::get('lastVisited') ?? '/');
 	}
 }
 ?>
