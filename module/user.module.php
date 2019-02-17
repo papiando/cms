@@ -18,8 +18,6 @@ class UserModule extends Addon {
 			$html .= '<a class="btn p-1" id="user-dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-lock fa-fw fa-lg"></i></a>';
 			$html .= '<ul class="dropdown-menu" arialabelledby="user-dropdown"><li class="dropdown-header">Not logged in</li><li class="dropdown-item"><a class="nav-link" href="/user/login">Log in</a></li><li class="dropdown-item"><a class="nav-link" href="/user/register">Register</a></li></div>';
 		} else {
-			//$user = Session::get('_User');
-			//show($user);
 			if(Session::get('_User')->avatar) {
 				$_Image = Image::get(Session::get('_User')->avatar,"`name`,`title`");
 				$image_html = '<img src="/image/'.$_Image->name.'?avatar" alt="'.Session::get('_User')->title.'" />';
