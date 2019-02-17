@@ -2,7 +2,7 @@
 <html lang="en" itemscope itemtype="https://schema.org/WebPage">
 <head>
 	<title itemprop="name headline">Error</title>
-	<base itemprop="url" href="http://cubo-cms.local/admin" />
+	<base itemprop="url" href="<?php echo sprintf("%s://%s",isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',$_SERVER['HTTP_HOST']); ?>" />
 	<meta charset="utf-8" />
 	<meta name="application_name" content="Cubo CMS" />
 	<meta name="generator" content="Cubo CMS by Papiando" />
