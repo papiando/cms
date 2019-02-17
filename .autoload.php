@@ -2,11 +2,11 @@
 namespace Cubo;
 
 // Define global constants
-define('DS',DIRECTORY_SEPARATOR);
-define('__ROOT__',dirname(__FILE__));
-define('__CUBO__',__NAMESPACE__);
-define('__BASE__',sprintf("%s://%s",isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',$_SERVER['HTTP_HOST']));
-define('__VERSION__','2.0.0');
+defined('DS') || define('DS',DIRECTORY_SEPARATOR);
+defined('__ROOT__') || define('__ROOT__',$_SERVER['DOCUMENT_ROOT']);
+defined('__CUBO__') || define('__CUBO__',__NAMESPACE__);
+defined('__BASE__') || define('__BASE__',sprintf("%s://%s",isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',$_SERVER['HTTP_HOST']));
+defined('__VERSION__') || define('__VERSION__','2.0.0');
 
 // Auto-register classes
 spl_autoload_register(function($class) {
@@ -49,5 +49,5 @@ spl_autoload_register(function($class) {
 });
 
 	// Detect install; if .config.php does not exist, then assume that it's a fresh install
-	new Application();
+	new Application;
 ?>
