@@ -23,7 +23,7 @@ class ArticleView extends View {
 	// Show a list of items
 	public function showList(&$_Data) {
 		$html = '<ul class="item-list" itemScope itemType="ItemList">';
-		foreach($this->_Data as $item)
+		foreach($_Data as $item)
 			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
 		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
