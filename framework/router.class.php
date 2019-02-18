@@ -38,7 +38,7 @@ final class Router {
 	
 	// Get parsed controller
 	public function getRoute() {
-		return $this->route['path'];
+		return empty($this->route['path']) ? '' : $this->route['path'];
 	}
 	
 	// Get parsed controller

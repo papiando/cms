@@ -1,0 +1,7 @@
+{
+    "name": "cubo-cms/cms",
+    "license": "MIT",
+    "require": {
+        "php": "^7.0"
+    }
+}
