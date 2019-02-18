@@ -14,6 +14,11 @@ final class Application {
 		self::run();
 	}
 	
+	// Returns the controller
+	public static function getController() {
+		return self::$_Controller;
+	}
+	
 	// Returns the router
 	public static function getRouter() {
 		return self::$_Router;
@@ -44,7 +49,7 @@ final class Application {
 		Configuration::setParameter('site-name',Configuration::get('site-name','Cubo CMS'));
 		Configuration::setParameter('template',Configuration::getDefault('template','default'));
 		Configuration::setParameter('theme',Configuration::getDefault('theme','default'));
-		Configuration::setParameter('title',Configuration::get('site_name','Cubo CMS'));
+		Configuration::setParameter('title',Configuration::get('site-name','Cubo CMS'));
 		// Read route, controller, method, and name
 		$controller = __CUBO__.'\\'.self::$_Router->getController().'controller';
 		$method = self::$_Router->getMethod();

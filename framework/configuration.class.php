@@ -66,6 +66,53 @@ final class Configuration {
 		empty(self::$_Configuration->_Attribute) && self::$_Configuration->_Attribute = [];
 		empty(self::$_Configuration->_Default) && self::$_Configuration->_Default = [];
 		empty(self::$_Configuration->_Parameter) && self::$_Configuration->_Parameter = [];
+		empty(self::$_Configuration->_Parameter) && self::$_Configuration->_Script = [];
+		empty(self::$_Configuration->_Parameter) && self::$_Configuration->_Stylesheet = [];
+	}
+	
+	// Add script
+	public static function addScript($script) {
+		self::$_Configuration->_Script[] = $script;
+	}
+	
+	// Add stylesheet
+	public static function addStylesheet($stylesheet) {
+		self::$_Configuration->_Stylesheet[] = $stylesheet;
+	}
+	
+	// Retrieve configuration setting
+	public static function get($property,$default = null) {
+		return self::$_Configuration->$property ?? $default ?? null;
+	}
+	
+	// Retrieve attribute setting
+	public static function getAttribute($property,$default = null) {
+		return self::$_Configuration->_Attribute[$property] ?? $default ?? null;
+	}
+	
+	// Retrieve default setting
+	public static function getDefault($property,$default = null) {
+		return self::$_Configuration->_Default[$property] ?? $default ?? null;
+	}
+	
+	// Retrieve parameter
+	public static function getParameter($property,$default = null) {
+		return self::$_Configuration->_Parameter[$property] ?? $default ?? null;
+	}
+	
+	// Retrieve route setting
+	public static function getRoute($property,$default = null) {
+		return self::$_Configuration->_Route[$property] ?? $default ?? null;
+	}
+	
+	// Retrieve list of scripts
+	public static function getScripts() {
+		return self::$_Configuration->_Script ?? [];
+	}
+	
+	// Retrieve list of stylesheets
+	public static function getStylesheets() {
+		return self::$_Configuration->_Stylesheet ?? [];
 	}
 	
 	// Load settings from configuration file
@@ -75,19 +122,9 @@ final class Configuration {
 			include_once(__ROOT__.DS.$file);
 	}
 	
-	// Retrieve configuration setting
-	public static function get($property,$default = null) {
-		return self::$_Configuration->$property ?? $default ?? null;
-	}
-	
 	// Store configuration setting
 	public static function set($property,$value) {
 		return self::$_Configuration->$property = $value;
-	}
-	
-	// Retrieve attribute setting
-	public static function getAttribute($property,$default = null) {
-		return self::$_Configuration->_Attribute[$property] ?? $default ?? null;
 	}
 	
 	// Store attribute setting
@@ -95,29 +132,14 @@ final class Configuration {
 		return self::$_Configuration->_Attribute[$property] = $value;
 	}
 	
-	// Retrieve default setting
-	public static function getDefault($property,$default = null) {
-		return self::$_Configuration->_Default[$property] ?? $default ?? null;
-	}
-	
 	// Store default setting
 	public static function setDefault($property,$value) {
 		return self::$_Configuration->_Default[$property] = $value;
 	}
 	
-	// Retrieve parameter
-	public static function getParameter($property,$default = null) {
-		return self::$_Configuration->_Parameter[$property] ?? $default ?? null;
-	}
-	
 	// Store parameter
 	public static function setParameter($property,$value) {
 		return self::$_Configuration->_Parameter[$property] = $value;
-	}
-	
-	// Retrieve route setting
-	public static function getRoute($property,$default = null) {
-		return self::$_Configuration->_Route[$property] ?? $default ?? null;
 	}
 }
 ?>

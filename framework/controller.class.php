@@ -40,7 +40,7 @@ class Controller {
 	public function requireListPermission() {
 		$filter = [];
 		if($this->containsAccessProperty())
-			if(Session::isAdmin())
+			if(Session::isAuthor())
 				$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.','.ACCESS_ADMIN.')';
 			elseif(Session::isRegistered())
 				$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.')';
@@ -92,19 +92,19 @@ class Controller {
 		return $this->view();
 	}
 	
-	// Call view with requested format
+	// Call view with requested method
 	protected function render($_Data) {
 		$view = __CUBO__.'\\'.$this->getRouter()->getController().'view';
-		$format = $this->getRouter()->getFormat();
+		$method = $this->getRouter()->getMethod();
 		if(class_exists($view)) {
-			if(method_exists($view,$format)) {
+			if(method_exists($view,$method)) {
 				// Send retrieved data to view and return output
 				$this->_View = new $view;
-				return $this->_View->$format($_Data);
+				return $this->_View->$method($_Data);
 			} else {
 				// Method does not exist for this view
 				$view = $this->getRouter()->getController();
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not have the method '{$format}' defined"]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not have the method '{$method}' defined"]);
 			}
 		} else {
 			// View not found

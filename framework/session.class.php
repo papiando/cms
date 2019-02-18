@@ -38,7 +38,7 @@ class Session {
 	
 	// Returns the user id of the currently logged in user, or NOBODY if not logged in
 	public static function getUser() {
-		return (isset($_SESSION['_User']) ? $_SESSION['_User']->id : USER_NOBODY);
+		return (isset($_SESSION['_User']) ? $_SESSION['_User']->{'#'} : USER_NOBODY);
 	}
 	
 	// Returns the role id of the currently logged in user, or GUEST if not logged in
@@ -56,19 +56,39 @@ class Session {
 		return self::$id;
 	}
 	
-	// Returns true if user is logged in as content manager
-	public static function isAdmin() {
-		return self::exists('_User') && in_array(self::get('_User')->role,[ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
-	}
-	
 	// Returns true if the item is accessible for the current user
 	public static function isAccessible($includeNone = false,$excludeSelf = false) {
 		return "`status`=".STATUS_PUBLISHED.($excludeSelf ? " AND `id`<>".$excludeSelf : "").($includeNone ? " OR `accesslevel`=".ACCESS_NONE : " AND `accesslevel`<>".ACCESS_NONE);
 	}
 	
+	// Returns true if user is logged in as administrator
+	public static function isAdministrator() {
+		return self::isRegistered() && in_array(self::get('_User')->role,[ROLE_ADMINISTRATOR]);
+	}
+	
+	// Returns true if user is logged in as author
+	public static function isAuthor() {
+		return self::isRegistered() && in_array(self::get('_User')->role,[ROLE_AUTHOR,ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
+	}
+	
+	// Returns true if user is logged in as editor
+	public static function isEditor() {
+		return self::isRegistered() && in_array(self::get('_User')->role,[ROLE_EDITOR,ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
+	}
+	
 	// Returns true if user is not logged in
 	public static function isGuest() {
 		return !self::exists('_User');
+	}
+	
+	// Returns true if user is logged in as manager
+	public static function isManager() {
+		return self::isRegistered() && in_array(self::get('_User')->role,[ROLE_MANAGER,ROLE_ADMINISTRATOR]);
+	}
+	
+	// Returns true if user is logged in as publisher
+	public static function isPublisher() {
+		return self::isRegistered() && in_array(self::get('_User')->role,[ROLE_PUBLISHER,ROLE_MANAGER,ROLE_ADMINISTRATOR]);
 	}
 	
 	// Returns true if user is logged in
