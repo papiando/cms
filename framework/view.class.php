@@ -11,11 +11,7 @@ class View {
 		return (isset($this->_Attribute[$attribute]) && $this->_Attribute[$attribute] != SETTING_GLOBAL ? $this->_Attribute[$attribute] : Configuration::getAttribute($attribute) ?? null);
 	}
 	
-	public function default(&$_Data) {
-		return $this->html($_Data);
-	}
-	
-	public function html(&$_Data) {
+	public function all(&$_Data) {
 		// Store the article attributes
 		if(empty($this->_Attribute))
 			!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
@@ -28,13 +24,13 @@ class View {
 			!empty($_Template->{'@attribute'}) && Configuration::set('_Attribute',json_decode($_Template->{'@attribute'},true));
 		}
 		// Get the body of the article
-		if(is_array($_Data)) {
-			$html = $this->showList($_Data);
-		} else {
-			$html = $this->showItem($_Data);
-		}
+		$html = $this->showList($_Data);
 		// Render plugins and return output
 		return $this->renderPlugins($html);
+	}
+	
+	public function default(&$_Data) {
+		return $this->html($_Data);
 	}
 	
 	public function renderPlugins($html) {
@@ -46,6 +42,24 @@ class View {
 				$html = $plugin::render($html);
 		}
 		return $html;
+	}
+	
+	public function view(&$_Data) {
+		// Store the article attributes
+		if(empty($this->_Attribute))
+			!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
+		// Retrieve the template; we need the template attributes as they are global settings
+		$_Template = Template::get($_Data->template ?? Configuration::getDefault('template','default'),"`name`,`@attribute`");
+		if($_Template) {
+			// Save template name as parameter
+			Configuration::setParameter('template',$_Template->name);
+			// Save template attributes as global settings
+			!empty($_Template->{'@attribute'}) && Configuration::set('_Attribute',json_decode($_Template->{'@attribute'},true));
+		}
+		// Get the body of the article
+		$html = $this->showItem($_Data);
+		// Render plugins and return output
+		return $this->renderPlugins($html);
 	}
 	
 	// Shared function to show item text in uniform way
