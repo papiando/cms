@@ -4,32 +4,6 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class ArticleView extends View {
-	// Show an item
-	public function showItem(&$_Data) {
-		empty($_Data->title) || Configuration::setParameter('title',$_Data->title);
-		$html = '<article class="article" itemScope itemType="https://schema.org/Article">';
-		if($this->getAttribute('position_info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
-		if($this->getAttribute('position_image') == SETTING_ABOVETITLE) $html .= $this->showImage($_Data);
-		if($this->getAttribute('position_info') == SETTING_ABOVETITLE) $html .= $this->showInfo($_Data);
-		if($this->getAttribute('show_title') == SETTING_SHOW) $html .= $this->showTitle($_Data);
-		if($this->getAttribute('position_image') == SETTING_BELOWTITLE) $html .= $this->showImage($_Data);
-		if($this->getAttribute('position_info') == SETTING_BELOWTITLE) $html .= $this->showInfo($_Data);
-		$html .= '<div itemProp="articleBody">'.$this->showBody($_Data).'</div>';
-		if($this->getAttribute('position_info') == SETTING_BELOWCONTENT) $html .= $this->showInfo($_Data);
-		$html .= '</article>';
-		return $html;
-	}
-	
-	// Show a list of items
-	public function showList(&$_Data) {
-		$html = '<ul class="item-list" itemScope itemType="ItemList">';
-		foreach($_Data as $item)
-			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
-		$html .= '</ul>';
-		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
-		return $html;
-	}
-	
 	// Show the item text
 	public function showBody(&$_Data) {
 		$html = '<span class="article-intro">'.($_Data->intro ?? '').'</span>';
@@ -53,6 +27,32 @@ class ArticleView extends View {
 		$html .= $this->showUser($_Data,'editor');
 		$html .= $this->showUser($_Data,'publisher');
 		$html .= '</div>';
+		return $html;
+	}
+	
+	// Show an item
+	public function showItem(&$_Data) {
+		empty($_Data->title) || Configuration::setParameter('title',$_Data->title);
+		$html = '<article class="article" itemScope itemType="https://schema.org/Article">';
+		if($this->getAttribute('position_info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('position_image') == SETTING_ABOVETITLE) $html .= $this->showImage($_Data);
+		if($this->getAttribute('position_info') == SETTING_ABOVETITLE) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('show_title') == SETTING_SHOW) $html .= $this->showTitle($_Data);
+		if($this->getAttribute('position_image') == SETTING_BELOWTITLE) $html .= $this->showImage($_Data);
+		if($this->getAttribute('position_info') == SETTING_BELOWTITLE) $html .= $this->showInfo($_Data);
+		$html .= '<div itemProp="articleBody">'.$this->showBody($_Data).'</div>';
+		if($this->getAttribute('position_info') == SETTING_BELOWCONTENT) $html .= $this->showInfo($_Data);
+		$html .= '</article>';
+		return $html;
+	}
+	
+	// Show a list of items
+	public function showList(&$_Data) {
+		$html = '<ul class="item-list" itemScope itemType="ItemList">';
+		foreach($_Data as $item)
+			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
+		$html .= '</ul>';
+		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
 		return $html;
 	}
 	
