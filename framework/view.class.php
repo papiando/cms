@@ -30,7 +30,7 @@ class View {
 	}
 	
 	public function default(&$_Data) {
-		return $this->html($_Data);
+		return $this->view($_Data);
 	}
 	
 	public function renderPlugins($html) {
