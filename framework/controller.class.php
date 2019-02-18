@@ -40,7 +40,7 @@ class Controller {
 	public function requireListPermission() {
 		$filter = [];
 		if($this->containsAccessProperty())
-			if(Session::isAdmin())
+			if(Session::isAuthor())
 				$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.','.ACCESS_ADMIN.')';
 			elseif(Session::isRegistered())
 				$filter[] = '`accesslevel` IN ('.ACCESS_PUBLIC.','.ACCESS_REGISTERED.')';
