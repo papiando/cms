@@ -1,11 +1,12 @@
 /.htaccess
 /.configuration.php
+/web.config
 /*.log
 /*.zip
 /*.sql
-/web.config
-/test/
 /admin/
-/install/
 /api/
 /backup/
+/install/
+/test/
+/vendor/
