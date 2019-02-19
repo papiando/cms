@@ -101,6 +101,7 @@ final class Router {
 			// Remainder is optional name
 			$this->name = $this->name ?? $part;
 		}
+		$this->name = empty($this->name) ? Configuration::getDefault($this->controller,'default') : $this->name;
 	}
 	
 	// Redirect function; by default supplied a 301 Moved Permanently response
