@@ -60,6 +60,7 @@ class Database {
 			switch($this->method) {
 				case 'insert':
 					$query = "INSERT INTO ".self::quote($this->query->insert);
+					isset($this->query->set) && $query .= " SET ".self::comma($this->query->set);
 					isset($this->query->columns) && $query .= ' ('.self::quote($this->query->columns).')';
 					isset($this->query->values) && $query .= " VALUES (".self::comma($this->query->values).')';
 					break;
@@ -77,10 +78,8 @@ class Database {
 					break;
 				case 'update':
 					$query = "UPDATE ".self::quote($this->query->update);
-					$query .= isset($this->query['set']) ? " SET ".self::comma($this->query['set']) : "";
-					isset($this->query->columns) && $query .= ' ('.self::quote($this->query->columns).')';
-					isset($this->query->values) && $query .= " VALUES (".self::comma($this->query->values).')';
-					$query .= isset($this->query['where']) ? " WHERE ".$this->query['where'] : "";
+					$query .= isset($this->query->set) ? " SET ".self::comma($this->query->set) : "";
+					$query .= isset($this->query->where) ? " WHERE ".$this->query->where : "";
 					break;
 				default:
 					$query = "";
@@ -96,6 +95,7 @@ class Database {
 			$list = $query;
 			$query = null;
 		}
+		$list = self::clean($list);
 		$sth = $this->dbh->prepare(empty($query) ? $this->query() : $query);
 		$sth->execute($list);
 		$result = $sth->fetchAll(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE,'\\'.__NAMESPACE__.'\\'.$this->className);
@@ -108,6 +108,7 @@ class Database {
 			$list = $query;
 			$query = null;
 		}
+		$list = self::clean($list);
 		$sth = $this->dbh->prepare(empty($query) ? $this->query() : $query);
 		$sth->execute($list);
 		$sth->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE,'\\'.__NAMESPACE__.'\\'.$this->className);
@@ -121,6 +122,7 @@ class Database {
 			$list = $query;
 			$query = null;
 		}
+		$list = self::clean($list);
 		$sth = $this->dbh->prepare(empty($query) ? $this->query() : $query);
 		$sth->execute($list);
 		$sth->setFetchMode(\PDO::FETCH_ASSOC);
@@ -134,6 +136,7 @@ class Database {
 			$list = $query;
 			$query = null;
 		}
+		$list = self::clean($list);
 		$sth = $this->dbh->prepare(empty($query) ? $this->query() : $query);
 		$sth->execute($list);
 		$sth->setFetchMode(\PDO::FETCH_ASSOC);
@@ -147,6 +150,7 @@ class Database {
 			$list = $query;
 			$query = null;
 		}
+		$list = self::clean($list);
 		$sth = $this->dbh->prepare(empty($query) ? $this->query() : $query);
 		$result = $sth->execute($list);
 		$this->className = null;
@@ -245,23 +249,20 @@ class Database {
 	public function data($data) {
 		if(is_array($data)) {
 			// Presume it is already an array
-			$keys = [];
-			$values = [];
+			$set = [];
 			foreach($data as $key=>$value) {
-				if(substr($key,0,1) == ':') {
-					// Key started with semi-colon, so will be fed into execute method
-					if($key != ':id') {		// Skip :id, should not be updated or added
-						$keys[] = substr($key,1);
-						$values[] = $key;
-					}
-				} else {
+				if(substr($key,0,1) == '@') {
+					// Key started with @ sign, so will be fed into execute method
+					$set[] = '`'.$key.'`=:'.substr($key,1);
+				} elseif(substr($key,0,1) == ':') {
+					// Key started with : sign, so will be fed into execute method
+					if($key != ':id')		// Skip :id, should not be updated or added
+						$set[] = '`'.substr($key,1).'`='.$key;
+				} else
 					// Add key and value
-					$keys[] = $key;
-					$values[] = $value;
-				}
+					$set[] = '`'.$key.'`='.$value;
 			}
-			$this->query->columns = $keys;
-			$this->query->values = $values;
+			$this->query->set = $set;
 		} else {
 			$array = json_decode($data,true);
 			if (json_last_error() === JSON_ERROR_NONE) {
@@ -272,14 +273,20 @@ class Database {
 		return $this;
 	}
 	
+	public static function clean($list) {
+		foreach($list as $key=>$value) {
+			if(substr($key,0,1) == '@') {
+				$list[':'.substr($key,1)] = $value;
+				unset($list[$key]);
+			} elseif(substr($key,0,1) != ':')
+				unset($list[$key]);
+		}
+		return $list;
+	}
+	
 	public static function comma($object) {
 		if(is_array($object)) {
-			$result = '';
-			$first = true;
-			foreach($object as $item) {
-				$first ? $first = false : $result .= ',';
-				$result .= $item;
-			}
+			$result = implode(',',$object);
 		} else
 			$result = $object;
 		return $result;
