@@ -274,6 +274,7 @@ class Database {
 	}
 	
 	public static function clean($list) {
+		if(is_null($list)) return null;
 		foreach($list as $key=>$value) {
 			if(substr($key,0,1) == '@') {
 				$list[':'.substr($key,1)] = $value;
