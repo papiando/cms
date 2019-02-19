@@ -141,7 +141,7 @@ class Controller {
 								$model = ucfirst($this->getRouter()->getController());
 								$name = $this->getRouter()->getName();
 								throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>3,'response'=>405,'message'=>"User does not have access to {$model} '{$name}'"]);
-								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','text'=>"This user has no access to {$this->class}"));
+								//Session::setMessage(array('alert'=>'error','icon'=>'exclamation','message'=>"This user has no access to {$this->class}"));
 								//Session::set('loginRedirect',Application::getParam('uri'));
 								//Router::redirect('/user?noaccess',403);
 							}

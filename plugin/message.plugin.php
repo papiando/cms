@@ -11,7 +11,7 @@ class MessagePlugin extends Addon {
 		foreach($_Messages as $_Message) {
 			is_array($_Message) && $_Message = (object)$_Message;
 			$html .= '<div class="alert alert-'.$_Message->alert.' alert-dismissible fade show" role="alert">';
-			$html .= '<strong><i class="fa fa-'.$_Message->icon.'"></i></strong> '.$_Message->text;
+			$html .= '<strong><i class="fa fa-'.$_Message->icon.'"></i></strong> '.$_Message->message;
 			$html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="fa fa-times"></i></span></button>';
 			$html .= '</div>';
 		}

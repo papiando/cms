@@ -37,7 +37,7 @@ class UserController extends Controller {
 						unset($_User->password);
 						// Save user data in session
 						Session::set('_User',$_User);
-						Session::setMessage(array('alert'=>'success','icon'=>'check','text'=>"Welcome {$_User->title}"));
+						Session::setMessage(array('alert'=>'success','icon'=>'check','message'=>"Welcome {$_User->title}"));
 						if(Session::exists('loginRedirect')) {
 							$this->_Router::redirect(Session::get('loginRedirect') ?? $this->_Router::getRoutePath());
 						} else {
@@ -83,7 +83,7 @@ class UserController extends Controller {
 	
 	// Method: logout
 	public function logout() {
-		Session::setMessage(array('alert'=>'info','icon'=>'exclamation','text'=>"See you later, {Session::get('_User')->title}"));
+		Session::setMessage(array('alert'=>'info','icon'=>'exclamation','message'=>"See you later, {Session::get('_User')->title}"));
 		Session::delete('_User');
 		Router::redirect(Session::get('lastVisited') ?? '/');
 	}
