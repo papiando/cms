@@ -1,15 +1,4 @@
 <?php
-/**
- * @application    Cubo CMS
- * @type           Framework
- * @class          Database
- * @description    The Database framework handles and simplifies access to the database and tables
- * @version        1.2.0
- * @date           2019-02-08
- * @author         Dan Barto
- * @copyright      Copyright (C) 2017 - 2019 Papiando Riba Internet
- * @license        MIT License; see LICENSE.md
- */
 namespace Cubo;
 
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
@@ -254,20 +243,51 @@ class Database {
 	}
 	
 	public function data($data) {
-		$json = json_decode($data,true);
-		if (json_last_error() === JSON_ERROR_NONE) {
-			$this->query->columns = array_keys($json);
-			$this->query->values = array_values($json);
-			// TODO: UPDATE SET statement
+		if(is_array($data)) {
+			// Presume it is already an array
+			$keys = [];
+			$values = [];
+			foreach($data as $key=>$value) {
+				if(substr($key,0,1) == ':') {
+					// Key started with semi-colon, so will be fed into execute method
+					if($key != ':id') {		// Skip :id, should not be updated or added
+						$keys[] = substr($key,1);
+						$values[] = $key;
+					}
+				} else {
+					// Add key and value
+					$keys[] = $key;
+					$values[] = $value;
+				}
+			}
+			$this->query->columns = $keys;
+			$this->query->values = $values;
 		} else {
-			throw new \Exception("[".get_class($this)."] [011] No JSON data provided");
+			$array = json_decode($data,true);
+			if (json_last_error() === JSON_ERROR_NONE) {
+				// If successful, call function again with result array
+				$this->data($array);
+			}
 		}
 		return $this;
 	}
 	
+	public static function comma($object) {
+		if(is_array($object)) {
+			$result = '';
+			$first = true;
+			foreach($object as $item) {
+				$first ? $first = false : $result .= ',';
+				$result .= $item;
+			}
+		} else
+			$result = $object;
+		return $result;
+	}
+	
 	public static function quote($object) {
 		if(is_array($object)) {
-			$result = "";
+			$result = '';
 			$first = true;
 			foreach($object as $item) {
 				$first ? $first = false : $result .= ',';
