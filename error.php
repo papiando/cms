@@ -5,17 +5,19 @@
 	<base itemprop="url" href="<?php echo sprintf("%s://%s",isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',$_SERVER['HTTP_HOST']); ?>" />
 	<meta charset="utf-8" />
 	<meta name="application_name" content="Cubo CMS" />
-	<meta name="generator" content="Cubo CMS by Papiando" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
-	<link href="/vendor/bootswatch/4.0.0-beta.2/cosmo/bootstrap.min.css" rel="stylesheet" />
-	<link href="/vendor/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-	<link rel="stylesheet" href="/vendor/cubo-cms/theme/cubo-cms.css" />
-	<link rel="stylesheet" href="/vendor/cubo-cms/template/cubo-cms.css" />
-	<link rel="icon" type="image/png" href="/vendor/cubo-cms/cubo-b192.png" />
-	<script src="/vendor/jquery/3.2.1/js/jquery.min.js"></script>
-	<script src="/vendor/popper.js/1.12.3/js/popper.min.js"></script>
-	<script src="/vendor/tether/1.3.3/js/tether.min.js"></script>
-    <script src="/vendor/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+	<meta name="creator" itemprop="creator" itemscope itemtype="https://schema.org/Organization" content="Papiando Riba Internet" />
+	<meta name="generator" content="Cubo CMS by Papiando" />
+	<meta name="robots" content="noindex,nofollow" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no" />
+	<link href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/vendor/cubo-cms/asset/stylesheet/theme.css" rel="stylesheet" />
+	<link href="/vendor/cubo-cms/asset/stylesheet/template.css" rel="stylesheet" />
+	<link href="/vendor/cubo-cms/asset/image/cubo-b192.png" rel="icon" type="image/png" />
+	<script defer src="/vendor/fortawesome/font-awesome/js/solid.js"></script>
+	<script defer src="/vendor/fortawesome/font-awesome/js/fontawesome.min.js"></script>
+	<script src="/vendor/components/jquery/jquery.slim.min.js"></script>
+    <script src="/vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body class="has-fixed-nav">
 	<nav id="navigation" class="navbar navbar-toggleable-md navbar-dark bg-primary fixed-top">
