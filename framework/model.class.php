@@ -17,6 +17,20 @@ class Model {
 		return self::$_Database;
 	}
 	
+	// Archive the item
+	public static function archive($id) {
+		$list = [':id'=>$id,':status'=>STATUS_ARCHIVED,'modified'=>'NOW()','editor'=>Session::getUser()];
+		self::getDB()->update(strtolower(self::getClass()))->data($list);
+		if(empty($id)) {
+			self::getDB()->where("`#`<0");			// Safety net if no valid $id is provided
+		} elseif(is_numeric($id)) {
+			self::getDB()->where("`#`=:id");
+		} else {
+			self::getDB()->where("`name`=:id");
+		}
+		return self::getDB()->execute($list);
+	}
+	
 	// Determine if a record exists; used to verify uniqueness
 	public static function exists($id,$filter = "1") {
 		return self::get($id,"`#`",$filter);			// Only return an object with the id, otherwise return nothing
