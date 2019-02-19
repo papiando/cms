@@ -133,5 +133,19 @@ class Model {
 		}
 		return self::getDB()->execute($list);
 	}
+	
+	// Visit the item; i.e. increment the number of visits
+	public static function visit($id) {
+		$list = [':id'=>$id,'visits'=>'visits+1'];
+		self::getDB()->update(strtolower(self::getClass()))->data($list);
+		if(empty($id)) {
+			self::getDB()->where("`#`<0");			// Safety net if no valid $id is provided
+		} elseif(is_numeric($id)) {
+			self::getDB()->where("`#`=:id");
+		} else {
+			self::getDB()->where("`name`=:id");
+		}
+		return self::getDB()->execute($list);
+	}
 }
 ?>
