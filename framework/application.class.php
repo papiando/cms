@@ -39,7 +39,7 @@ final class Application {
 		Configuration::setParameter('url',__BASE__.current(explode('?',$_SERVER['REQUEST_URI'])));
 		// Set other application parameters
 		Configuration::setParameter('base-url',__BASE__);
-		Configuration::setParameter('brand-logo',Configuration::get('brand-logo','/vendor/cubo-cms/cubo-w192.png'));
+		Configuration::setParameter('brand-logo',Configuration::get('brand-logo','/vendor/cubo-cms/asset/image/cubo-w192.png'));
 		Configuration::setParameter('brand-name',Configuration::get('brand-name','<strong>Cubo</strong> <em>CMS</em>'));
 		Configuration::setParameter('generator',"Cubo CMS by Papiando");
 		Configuration::setParameter('generator-url',"https://cubo-cms.com");

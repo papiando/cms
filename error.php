@@ -23,7 +23,7 @@
 	<nav id="navigation" class="navbar navbar-toggleable-md navbar-dark bg-primary fixed-top">
 		<div class="container d-flex flex-nowrap">
 			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-			<a class="navbar-brand" href="/"><img class="brand-logo" src="/vendor/cubo-cms/cubo-w192.png" /><span class="brand-name"><strong>Cubo</strong> <em>CMS</em></span></a>
+			<a class="navbar-brand" href="/"><img class="brand-logo" src="/vendor/cubo-cms/asset/image/cubo-w192.png" /><span class="brand-name"><strong>Cubo</strong> <em>CMS</em></span></a>
 		</div>
 	</nav>
 	<header id="header"></header>
