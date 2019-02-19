@@ -59,12 +59,12 @@ class Model {
 	
 	// Parse associative array to determine which fields should be updated/inserted
 	public static function parseData($data) {
-		$attribute = (object)[];
+		$attribute = [];
 		foreach($data as $property=>$value) {
 			if(substr($property,0,1) == '@') {
 				// This is an attribute; add to list of attributes
 				$key = substr($property,1);
-				$attribute->$key = $value;
+				$attribute[$key] = $value;
 				unset($data[$property]);
 			} elseif(substr($property,0,1) == '+') {
 				// This is a counter; increment
