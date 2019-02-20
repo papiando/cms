@@ -56,7 +56,7 @@ CREATE TABLE `article` (
 
 LOCK TABLES `article` WRITE;
 /*!40000 ALTER TABLE `article` DISABLE KEYS */;
-INSERT INTO `article` VALUES (1,'home','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"3\",\"show_tags\":\"-1\",\"show_date\":\"4\",\"show_image\":\"3\",\"position_image\":\"2\",\"show_info\":\"-1\",\"position_info\":\"3\",\"show_readmore\":\"1\"}',1,1,'<p>Welcome to the home page.</p>',1,'1968-12-10 00:00:00','This is the home page',NULL,NULL,'<p>There is no place like home.</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,NULL,'Home',0),(2,'login','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"2\",\"show_tags\":\"2\",\"show_date\":\"2\",\"show_image\":\"2\",\"position_image\":\"2\",\"show_info\":\"2\",\"position_info\":\"3\",\"show_readmore\":\"0\"}',3,1,'<cubo:module name=\"login\" content=\"\" />',1,'1968-12-10 00:00:00','This is the login page',NULL,NULL,'<p>Please provide your user name and password</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,1,'User Login',0),(1001,'unpublished',NULL,1,2,'<p>This article is not published</p>',1,NULL,'Unpublished article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,0,NULL,NULL,'Unpublished article',0),(1002,'restricted',NULL,2,2,'<p>This article is restricted</p>',1,NULL,'Restricted article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,1,NULL,NULL,'Restricted article',0);
+INSERT INTO `article` VALUES (1,'home','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"3\",\"show_tags\":\"-1\",\"show_date\":\"4\",\"show_image\":\"3\",\"position_image\":\"2\",\"show_info\":\"-1\",\"position_info\":\"3\",\"show_readmore\":\"1\"}',1,1,'<p>Welcome to the home page.</p>',1,'1968-12-10 00:00:00','This is the home page',NULL,NULL,'<p>There is no place like home.</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,NULL,'Home',1),(2,'login','{\"show_title\":\"3\",\"show_author\":\"4\",\"show_category\":\"2\",\"show_tags\":\"2\",\"show_date\":\"2\",\"show_image\":\"2\",\"position_image\":\"2\",\"show_info\":\"2\",\"position_info\":\"3\",\"show_readmore\":\"0\"}',3,1,'<cubo:module name=\"login\" content=\"\" />',1,'1968-12-10 00:00:00','This is the login page',NULL,NULL,'<p>Please provide your user name and password</p>',1,NULL,'1968-12-10 00:00:00',1,NULL,1,NULL,1,'User Login',0),(1001,'unpublished',NULL,1,2,'<p>This article is not published</p>',1,NULL,'Unpublished article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,0,NULL,NULL,'Unpublished article',0),(1002,'restricted',NULL,2,2,'<p>This article is restricted</p>',1,NULL,'Restricted article',NULL,NULL,NULL,1,NULL,NULL,NULL,NULL,1,NULL,NULL,'Restricted article',0);
 /*!40000 ALTER TABLE `article` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -69,4 +69,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-19 17:05:50
+-- Dump completed on 2019-02-20 16:27:33
