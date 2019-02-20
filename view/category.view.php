@@ -53,6 +53,7 @@ class CategoryView extends View {
 			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
 		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
+		// Change title; take from Application; should still convert to plural
 		return $html;
 	}
 	

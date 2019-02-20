@@ -39,9 +39,9 @@ class UserController extends Controller {
 						Session::set('_User',$_User);
 						Session::setMessage(array('alert'=>'success','icon'=>'check','message'=>"Welcome {$_User->title}"));
 						if(Session::exists('loginRedirect')) {
-							$this->_Router::redirect(Session::get('loginRedirect') ?? $this->_Router::getRoutePath());
+							$this->_Router::redirect(Session::get('loginRedirect') ?? $this->_Router::getRoute());
 						} else {
-							$this->_Router::redirect(Session::get('lastVisited') ?? $this->_Router::getRoutePath());
+							$this->_Router::redirect(Session::get('lastVisited') ?? $this->_Router::getRoute());
 						}
 						show($_User);
 					}

@@ -100,11 +100,6 @@ final class Configuration {
 		return self::$_Configuration->_Parameter[$property] ?? $default ?? null;
 	}
 	
-	// Retrieve route setting
-	public static function getRoute($property,$default = null) {
-		return self::$_Configuration->_Route[$property] ?? $default ?? null;
-	}
-	
 	// Retrieve list of scripts
 	public static function getScripts() {
 		return self::$_Configuration->_Script ?? [];

@@ -8,7 +8,7 @@ final class Router {
 	private $format;
 	private $method;
 	private $name;
-	private $route;
+	private $_Route;
 	
 	// Constructor of Router class parses URI
 	public function __construct($uri) {
@@ -26,6 +26,11 @@ final class Router {
 		return $this->format;
 	}
 	
+	// Get parsed language
+	public function getLanguage() {
+		return $this->language;
+	}
+	
 	// Get parsed method
 	public function getMethod() {
 		return $this->method;
@@ -38,12 +43,7 @@ final class Router {
 	
 	// Get parsed controller
 	public function getRoute() {
-		return empty($this->route['path']) ? '' : $this->route['path'];
-	}
-	
-	// Get parsed controller
-	public function getRoutePath() {
-		return empty($this->route['path']) ? '/' : '/'.$this->route['path'].'/';
+		return empty($this->_Route['path']) ? '/' : '/'.trim($this->_Route['path'],'/').'/';
 	}
 	
 	// Parse URI and determine routes
@@ -62,19 +62,22 @@ final class Router {
 		// Define accepted routes
 		$routes = Configuration::get('_Route',[''=>[]]);
 		// Predefine default route, controller, and method
-		$this->route = $routes[''];
+		$this->_Route = $routes[''];
 		$this->controller = Configuration::getDefault('controller','article');
-		$this->method = Configuration::getDefault('method','default');
 		$this->format = Configuration::getDefault('format','default');
+		$this->language = Configuration::getDefault('language','undefined');
+		$this->method = Configuration::getDefault('method','default');
 		// Parse the URL part of URI
 		if(count($path_parts)) {
 			$part = strtolower(current($path_parts));
 			// Get route if given
 			if(in_array($part,array_keys($routes))) {
-				$this->route = $routes[$part];
-				define('__ROUTE__',$this->route['path'] ?? null);
-				$this->method = $this->route['default-method'] ?? $this->method;
-				$this->format = $this->route['default-format'] ?? $this->format;
+				$this->_Route = $routes[$part];
+				define('__ROUTE__',$this->getRoute());
+				$this->controller = $this->_Route['controller'] ?? $this->_Route['default-controller'] ?? $this->controller;
+				$this->format = $this->_Route['format'] ?? $this->_Route['default-format'] ?? $this->format;
+				$this->language = $this->_Route['language'] ?? $this->_Route['default-language'] ?? $this->language;
+				$this->method = $this->_Route['method'] ?? $this->_Route['default-method'] ?? $this->method;
 				array_shift($path_parts);
 				$part = strtolower(current($path_parts));
 			}
@@ -83,7 +86,7 @@ final class Router {
 				if(class_exists(__CUBO__.'\\'.$part.'controller'))
 					$this->controller = $part;
 				else
-					$this->controller = $part; // Controller does not exist, give back anyhow
+					$this->controller = $part;		 // Controller does not exist, give back anyhow
 				array_shift($path_parts);
 				$part = strtolower(current($path_parts));
 			}

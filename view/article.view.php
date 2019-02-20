@@ -52,6 +52,7 @@ class ArticleView extends View {
 		foreach($_Data as $item)
 			$html .= '<li class="list-item" itemProp="itemListElement" itemScope itemType="ListItem">'.$this->showItem($item).'</li>';
 		$html .= '</ul>';
+		// Change title; take from Application; should still convert to plural
 		Configuration::setParameter('title',ucfirst(Application::getRouter()->getController()));
 		return $html;
 	}
