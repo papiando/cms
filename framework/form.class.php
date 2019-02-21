@@ -23,7 +23,7 @@ class Form {
 		!is_array($params) || $params = (object)$params;
 		$html = '<div class="form-group">';
 		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
-		$html .= '<select id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" class="'.$params->class.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').' tabindex="-1">';
+		$html .= '<select id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" class="'.$params->class.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').'>';
 		$items = [];
 		if(isset($params->query)) {
 			$_Model = new Model;
@@ -51,7 +51,7 @@ class Form {
 		!is_array($params) || $params = (object)$params;
 		$html = '<div class="form-group'.(isset($params->width) ? ' grid-column-'.$params->width : '').'">';
 		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
-		$html .= '<textarea id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" class="'.$params->class.'" placeholder="'.$params->title.'" rows="'.$params->size.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').(isset($params->required) && $params->required ? ' required' : '').' tabindex="-1">'.($params->value ?? $params->default ?? '').'</textarea>';
+		$html .= '<textarea id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" class="'.$params->class.'" placeholder="'.$params->title.'" rows="'.$params->size.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').(isset($params->required) && $params->required ? ' required' : '').'>'.($params->value ?? $params->default ?? '').'</textarea>';
 		$html .= '</div>';
 		return $html;
 	}
