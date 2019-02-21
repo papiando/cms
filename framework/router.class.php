@@ -64,7 +64,7 @@ final class Router {
 		// Predefine default route, controller, and method
 		$this->_Route = $routes[''];
 		$this->controller = Configuration::getDefault('controller','article');
-		$this->format = Configuration::getDefault('format','default');
+		$this->format = Configuration::getDefault('format',$_GET['format'] ?? 'html');
 		$this->language = Configuration::getDefault('language','undefined');
 		$this->method = Configuration::getDefault('method','default');
 		// Parse the URL part of URI
