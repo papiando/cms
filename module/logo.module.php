@@ -8,10 +8,10 @@ class LogoModule extends Addon {
 	public static function render($_Params) {
 		$html = '<a class="navbar-brand" href="/<cubo:param name=\'route\' />">';
 		if(!empty(Configuration::getParameter('brand-logo'))) {
-			$html .= '<img class="brand-logo" src="'.Configuration::getParameter('brand-logo').'" />';
+			$html .= '<img class="brand-logo '.($_Params->{'brand-logo'} ?? '').'" src="'.Configuration::getParameter('brand-logo').'" />';
 		}
 		if(!empty(Configuration::getParameter('brand-name'))) {
-			$html .= '<span class="brand-name">'.Configuration::getParameter('brand-name').'</span>';
+			$html .= '<span class="brand-name '.($_Params->{'brand-name'} ?? '').'">'.Configuration::getParameter('brand-name').'</span>';
 		}
 		$html .= '</a>';
 		return $html;				

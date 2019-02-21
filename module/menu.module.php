@@ -26,7 +26,7 @@ class MenuModule extends Addon {
 				$_Option = Option::get($option,"`@attribute`,`@option`,accesslevel,title",self::requireViewPermission());
 				if($_Option) {
 					$_Attribute = json_decode($_Option->{'@attribute'});
-					empty($html) && $html = '<ul class="navbar-nav">';
+					empty($html) && $html = '<ul '.(isset($_Menu->name) ? 'id="'.$_Menu->name.'" ' : '').'class="navbar-nav">';
 					$html .= '<li class="nav-item">';
 					if(isset($_Attribute->uri)) {				// Internal link
 						$html .= '<a class="nav-link" href="'.$_Attribute->uri.'">'.$_Option->title.'</a>';
@@ -52,7 +52,7 @@ class MenuModule extends Addon {
 			$menu = Configuration::getDefault('menu','mainmenu');
 		}
 		$html = '';
-		$_Menu = Menu::get($menu,"`@attribute`,`@option`,accesslevel,title",1);
+		$_Menu = Menu::get($menu,"`name`,`@attribute`,`@option`,accesslevel,title",1);
 		if($_Menu) {
 			$html .= self::showOptions($_Menu);
 		}
