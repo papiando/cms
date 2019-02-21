@@ -44,7 +44,7 @@ define('SETTING_EDITOR',5);
 define('SETTING_FLOATLEFT',6);
 define('SETTING_FLOATRIGHT',7);
 define('SETTING_GLOBAL',-1);
-define('SETTING_HIDE',2);
+define('SETTING_HIDE',0);
 define('SETTING_MODIFIEDDATE',5);
 define('SETTING_NO',0);
 define('SETTING_OFF',0);
@@ -52,7 +52,7 @@ define('SETTING_ON',1);
 define('SETTING_PARAGRAPH',3);
 define('SETTING_PUBLISHEDDATE',6);
 define('SETTING_PUBLISHER',6);
-define('SETTING_SHOW',3);
+define('SETTING_SHOW',1);
 define('SETTING_TENLINES',4);
 define('SETTING_YES',1);
 
