@@ -4,6 +4,15 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class Form {
+	// Return textarea
+	public static function datetime(&$params) {
+		$html = '<div class="form-group">';
+		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
+		$html .= '<input id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" type="'.($params->type ?? 'text').'" class="'.$params->class.'" placeholder="'.$params->title.'" value="'.($params->value ?? $params->default ?? '').'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').' />';
+		$html .= '</div>';
+		return $html;
+	}
+	
 	// Return query
 	public static function query($class,$filter = "1",$order = "`title`") {
 		return "SELECT `#`,`title` FROM `{$class}` WHERE {$filter} ORDER BY {$order}";
@@ -20,8 +29,9 @@ class Form {
 			$_Model = new Model;
 			$items = $_Model->getDB()->loadItems($params->query);
 		}
-		if(!empty($params->list))
-			$items = array_merge([$params->list],$items);
+		if(!empty($params->list)) {
+			$items = array_merge($params->list,$items);
+		}
 		foreach($items as $item) {
 			$item = (object)$item;
 			$html .= '<option value="'.$item->{'#'}.'"'.($item->{'#'} == ($params->value ?? $params->default) ? ' selected' : '').'>'.$item->title.'</option>';
