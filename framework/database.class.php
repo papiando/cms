@@ -65,7 +65,7 @@ class Database {
 					isset($this->query->values) && $query .= " VALUES (".self::comma($this->query->values).')';
 					break;
 				case 'select':
-					$query = "SELECT ".$this->query->select;
+					$query = "SELECT ".self::comma($this->query->select);
 					$query .= isset($this->query->from) ? " FROM ".self::quote($this->query->from) : "";
 					$query .= isset($this->query->innerjoin) ? " INNER JOIN ".self::quote($this->query->innerjoin) : "";
 					$query .= isset($this->query->on) ? " ON ".self::quote($this->query->on)."=".self::quote($this->query->innerjoin).".`id`" : "";
