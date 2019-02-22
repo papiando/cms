@@ -4,12 +4,18 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class Form {
-	// Return textarea
+	// Return data time input
 	public static function datetime(&$params) {
 		$html = '<div class="form-group">';
 		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
 		$html .= '<input id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" type="'.($params->type ?? 'text').'" class="'.$params->class.'" placeholder="'.$params->title.'" value="'.($params->value ?? $params->default ?? '').'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').' />';
 		$html .= '</div>';
+		return $html;
+	}
+	
+	// Return hidden input
+	public static function hidden(&$params) {
+		$html = '<input id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" type="'.($params->type ?? 'hidden').'" value="'.($params->value ?? $params->default ?? '').'" />';
 		return $html;
 	}
 	
@@ -23,7 +29,7 @@ class Form {
 		!is_array($params) || $params = (object)$params;
 		$html = '<div class="form-group">';
 		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
-		$html .= '<select id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" class="'.$params->class.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').'>';
+		$html .= '<select id="'.$params->name.'" name="'.($params->prefix ?? '').(isset($params->prefix) && $params->prefix != '@' ? str_replace('-','_',$params->name) : $params->name).'" class="'.$params->class.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').'>';
 		$items = [];
 		if(isset($params->query)) {
 			$_Model = new Model;
@@ -44,6 +50,15 @@ class Form {
 	// Return filter selection
 	public static function selectFilter(&$params) {
 		return self::select($params);
+	}
+	
+	// Return text input
+	public static function text(&$params) {
+		$html = '<div class="form-group">';
+		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
+		$html .= '<input id="'.$params->name.'" name="'.($params->prefix ?? '').str_replace('-','_',$params->name).'" type="'.($params->type ?? 'text').'" class="'.$params->class.'" placeholder="'.$params->title.'" value="'.($params->value ?? $params->default ?? '').'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').' />';
+		$html .= '</div>';
+		return $html;
 	}
 	
 	// Return textarea
