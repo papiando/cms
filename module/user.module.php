@@ -13,10 +13,9 @@ class UserModule extends Addon {
 		else
 			return false;
 		// Now render the rest
-		$html = '<div class="navbar-user dropdown">';
+		$path = Application::getRouter()->getRoute();
 		if(Session::isGuest()) {
-			$html .= '<a class="btn p-1" id="user-dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-lock fa-fw fa-lg"></i></a>';
-			$html .= '<ul class="dropdown-menu" arialabelledby="user-dropdown"><li class="dropdown-header">Not logged in</li><li class="dropdown-item"><a class="nav-link" href="/user/login">Log in</a></li><li class="dropdown-item"><a class="nav-link" href="/user/register">Register</a></li></div>';
+			$html = '<a class="nav-link p-0 text-nowrap d-flex align-items-center" href="'.$path.'user/login"><span class="circle"><i class="fa fa-user-lock fa-fw fa-lg"></i></span><span class="d-none d-md-inline pl-2">Login</span></a>';
 		} else {
 			if(Session::get('_User')->avatar) {
 				$_Image = Image::get(Session::get('_User')->avatar,"`name`,`title`");
@@ -24,10 +23,8 @@ class UserModule extends Addon {
 			} else {
 				$image_html = '<i class="fa fa-user fa-fw fa-lg"></i>';
 			}
-			$html .= '<a class="btn p-1" id="user-dropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'.$image_html.'</a>';
-			$html .= '<ul class="dropdown-menu" arialabelledby="user-dropdown"><li class="dropdown-header">'.Session::get('_User')->title.'</li><li class="dropdown-item"><a class="nav-link" href="/user/me">Profile</a></li><li class="dropdown-item"><a class="nav-link" href="/user/logout">Log out</a></li></div>';
+			$html = '<a class="nav-link p-0 text-nowrap d-flex align-items-center" href="'.$path.'user/'.Session::get('_User')->name.'"><span class="circle">'.$image_html.'</span><span class="d-none d-md-inline pl-2">'.Session::get('_User')->title.'</span></a>';
 		}
-		$html .= '</div>';
 		return $html;
 	}
 }
