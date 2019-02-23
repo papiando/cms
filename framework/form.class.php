@@ -27,7 +27,7 @@ class Form {
 	// Return selection
 	public static function select(&$params) {
 		!is_array($params) || $params = (object)$params;
-		$html = '<div class="form-group">';
+		$html = '<div class="'.($params->{'group-class'} ?? 'form-group').'">';
 		$html .= '<label for="'.$params->name.'">'.$params->title.'</label>';
 		$html .= '<select id="'.$params->name.'" name="'.($params->prefix ?? '').(isset($params->prefix) && $params->prefix != '@' ? str_replace('-','_',$params->name) : $params->name).'" class="'.$params->class.'"'.(isset($params->readonly) && $params->readonly ? ' readonly' : '').'>';
 		$items = [];
@@ -49,6 +49,8 @@ class Form {
 	
 	// Return filter selection
 	public static function selectFilter(&$params) {
+		!is_array($params) || $params = (object)$params;
+		$params->{'group-class'} = 'form-group col';
 		return self::select($params);
 	}
 	
@@ -74,7 +76,7 @@ class Form {
 	// Filter for text search
 	public static function textFilter(&$params) {
 		!is_array($params) || $params = (object)$params;
-		return '<div class="form-group"><label for="'.$params->name.'">'.$params->label.'</label><input id="'.$params->prefix.str_replace('-','_',$params->name).'" name="'.$params->name.'" class="form-control" type="text" placeholder="'.$params->label.'" value="'.$params->value.'" /></div>';
+		return '<div class="form-group col"><label for="'.$params->name.'">'.$params->label.'</label><input id="'.$params->prefix.str_replace('-','_',$params->name).'" name="'.$params->name.'" class="form-control" type="text" placeholder="'.$params->label.'" value="'.$params->value.'" /></div>';
 	}
 }
 ?>
