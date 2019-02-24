@@ -50,7 +50,6 @@ class Form {
 	// Return filter selection
 	public static function selectFilter(&$params) {
 		!is_array($params) || $params = (object)$params;
-		$params->{'group-class'} = 'form-group col';
 		return self::select($params);
 	}
 	
