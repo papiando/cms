@@ -40,7 +40,7 @@ class Model {
 	public static function get($id,$columns = "*",$filter = "1") {
 		self::getDB()->select($columns)->from(strtolower(self::getClass()));
 		if(empty($id)) {
-			self::getDB()->where("{$filter}");			// Safety net if no valid $id is provided
+			return null;								// Safety net if no valid $id is provided
 		} elseif(is_numeric($id)) {
 			self::getDB()->where("`#`=:id AND {$filter}");
 		} else {
