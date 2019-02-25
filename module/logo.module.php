@@ -4,7 +4,7 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class LogoModule extends Addon {
-	// Render login form
+	// Render logo
 	public static function render($_Params) {
 		$html = '<a class="navbar-brand" href="<cubo:param name=\'route\' />">';
 		if(!empty(Configuration::getParameter('brand-logo'))) {
