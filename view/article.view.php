@@ -34,14 +34,14 @@ class ArticleView extends View {
 	public function showItem(&$_Data) {
 		empty($_Data->title) || Configuration::setParameter('title',$_Data->title);
 		$html = '<article class="article" itemScope itemType="https://schema.org/Article">';
-		if($this->getAttribute('position_info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
-		if($this->getAttribute('position_image') == SETTING_ABOVETITLE) $html .= $this->showImage($_Data);
-		if($this->getAttribute('position_info') == SETTING_ABOVETITLE) $html .= $this->showInfo($_Data);
-		if($this->getAttribute('show_title') == SETTING_SHOW) $html .= $this->showTitle($_Data);
-		if($this->getAttribute('position_image') == SETTING_BELOWTITLE) $html .= $this->showImage($_Data);
-		if($this->getAttribute('position_info') == SETTING_BELOWTITLE) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('position-info') == SETTING_ABOVECONTENT) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('position-image') == SETTING_ABOVETITLE) $html .= $this->showImage($_Data);
+		if($this->getAttribute('position-info') == SETTING_ABOVETITLE) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('show-title') == SETTING_SHOW) $html .= $this->showTitle($_Data);
+		if($this->getAttribute('position-image') == SETTING_BELOWTITLE) $html .= $this->showImage($_Data);
+		if($this->getAttribute('position-info') == SETTING_BELOWTITLE) $html .= $this->showInfo($_Data);
 		$html .= '<div itemProp="articleBody">'.$this->showBody($_Data).'</div>';
-		if($this->getAttribute('position_info') == SETTING_BELOWCONTENT) $html .= $this->showInfo($_Data);
+		if($this->getAttribute('position-info') == SETTING_BELOWCONTENT) $html .= $this->showInfo($_Data);
 		$html .= '</article>';
 		return $html;
 	}
