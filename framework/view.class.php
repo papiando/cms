@@ -46,8 +46,7 @@ class View {
 	
 	public function view(&$_Data) {
 		// Store the article attributes
-		if(empty($this->_Attribute))
-			!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
+		!empty($_Data->{'@attribute'}) && $this->_Attribute = json_decode($_Data->{'@attribute'},true);
 		// Retrieve the template; we need the template attributes as they are global settings
 		$_Template = Template::get($_Data->template ?? Configuration::getDefault('template','default'),"`name`,`@attribute`");
 		if($_Template) {
