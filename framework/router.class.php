@@ -73,7 +73,7 @@ final class Router {
 			// Get route if given
 			if(in_array($part,array_keys($routes))) {
 				$this->_Route = $routes[$part];
-				define('__ROUTE__',$this->getRoute());
+				defined('__ROUTE__') || define('__ROUTE__',trim($this->getRoute(),'/'));
 				$this->controller = $this->_Route['controller'] ?? $this->_Route['default-controller'] ?? $this->controller;
 				$this->format = $this->_Route['format'] ?? $this->_Route['default-format'] ?? $this->format;
 				$this->language = $this->_Route['language'] ?? $this->_Route['default-language'] ?? $this->language;
