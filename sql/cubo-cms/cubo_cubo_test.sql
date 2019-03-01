@@ -16,37 +16,28 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `log`
+-- Table structure for table `test`
 --
 
-DROP TABLE IF EXISTS `log`;
+DROP TABLE IF EXISTS `test`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `log` (
+CREATE TABLE `test` (
   `#` int(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL,
-  `accesslevel` int(20) DEFAULT NULL,
-  `author` int(20) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `description` text,
-  `editor` int(20) DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  `published` datetime DEFAULT NULL,
-  `publisher` int(20) DEFAULT NULL,
-  `status` int(20) DEFAULT NULL,
-  `title` text,
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Log';
+) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8mb4 COMMENT='Test';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `log`
+-- Dumping data for table `test`
 --
 
-LOCK TABLES `log` WRITE;
-/*!40000 ALTER TABLE `log` DISABLE KEYS */;
-/*!40000 ALTER TABLE `log` ENABLE KEYS */;
+LOCK TABLES `test` WRITE;
+/*!40000 ALTER TABLE `test` DISABLE KEYS */;
+INSERT INTO `test` VALUES (1001,'another'),(1,'default'),(2,'test');
+/*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -58,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-01 18:16:27
+-- Dump completed on 2019-03-01 18:16:32

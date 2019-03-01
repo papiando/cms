@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cubo_cubo
 -- ------------------------------------------------------
--- Server version	5.6.25-log
+-- Server version	5.7.11-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,22 +28,23 @@ CREATE TABLE `category` (
   `@attribute` text,
   `accesslevel` int(20) DEFAULT NULL,
   `author` int(20) DEFAULT NULL,
+  `body` longtext,
+  `category` int(20) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `description` text,
   `editor` int(20) DEFAULT NULL,
-  `html` longtext,
   `image` int(20) DEFAULT NULL,
   `language` int(20) DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  `parent` int(20) DEFAULT NULL,
   `published` datetime DEFAULT NULL,
   `publisher` int(20) DEFAULT NULL,
   `status` int(20) DEFAULT NULL,
   `tags` text,
   `title` text,
+  `visits` int(20) DEFAULT '0',
   PRIMARY KEY (`#`),
   UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8mb4 COMMENT='Category';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='Category';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +53,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (0,'none',NULL,0,1,'1968-12-10 00:00:00','Root category',NULL,NULL,NULL,1,NULL,NULL,'1968-12-10 00:00:00',1,1,NULL,'None'),(1,'undefined',NULL,4,1,'1968-12-10 00:00:00','Undefined category',NULL,NULL,NULL,1,NULL,NULL,'1968-12-10 00:00:00',1,1,NULL,'Undefined');
+INSERT INTO `category` VALUES (0,'none',NULL,0,1,NULL,NULL,'1968-12-10 00:00:00','Root category',NULL,NULL,1,NULL,'1968-12-10 00:00:00',1,1,NULL,'None',0),(1,'undefined',NULL,4,1,NULL,NULL,'1968-12-10 00:00:00','Undefined category',NULL,NULL,1,NULL,'1968-12-10 00:00:00',1,1,NULL,'Undefined',0),(2,'documentation','{\"show-title\":\"-1\",\"show-author\":\"-1\",\"show-category\":\"-1\",\"show-tags\":\"-1\",\"show-date\":\"-1\",\"show-image\":\"-1\",\"position-image\":\"-1\",\"show-info\":\"-1\",\"position-info\":\"-1\",\"show-readmore\":\"-1\"}',1,2,'<p>Find here everything you need to know about the Cubo CMS Framework. From a brief explanation of what the CMS has to offer, its requirements, and installation procedure, up to an extensive explanation of how to create, edit, or remove content.</p>\r\n<p>For experienced users, we are providing our Knowledgebase. And see our Support section to look for known solutions to problems you may encounter, or ask the experts.</p>',0,'2019-02-26 00:35:28','Find here everything you need to know about the Cubo CMS Framework. From a brief explanation of what the CMS has to offer, its requirements, and installation procedure, up to an extensive explanation of how to create, edit, or remove content.',NULL,NULL,1,NULL,'2019-02-26 00:35:28',2,1,'documentation,installation,configuration,prerequisites','Documentation',0),(3,'introduction','{\"show-title\":\"-1\",\"show-author\":\"-1\",\"show-category\":\"-1\",\"show-tags\":\"-1\",\"show-date\":\"-1\",\"show-image\":\"-1\",\"position-image\":\"-1\",\"show-info\":\"-1\",\"position-info\":\"-1\",\"show-readmore\":\"-1\"}',1,2,'Introduction',2,'2019-02-26 00:36:33','',NULL,NULL,1,NULL,'2019-02-26 00:36:33',2,1,'','Introduction',0);
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -65,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-21 15:22:46
+-- Dump completed on 2019-03-01 18:16:27
