@@ -12,8 +12,6 @@ defined('__VERSION__') || define('__VERSION__','2.0.0');
 spl_autoload_register(function($class) {
 	// Get the last part of the class (since all classes will have a namespace)
 	$class = strtolower(basename(str_replace('\\','/',$class)));
-	// Determine whether there is a route defined
-	$route = (defined('__ROUTE__') ? __ROUTE__ : null);
 	// Set path names
 	$frameworkPath = 'framework'.DS.$class.'.class.php';
 	$modelPath = 'model'.DS.$class.'.model.php';
@@ -21,33 +19,41 @@ spl_autoload_register(function($class) {
 	$controllerPath = 'controller'.DS.str_replace('controller','',$class).'.controller.php';
 	$pluginPath = 'plugin'.DS.str_replace('plugin','',$class).'.plugin.php';
 	$modulePath = 'module'.DS.str_replace('module','',$class).'.module.php';
-	// Include if file exists ($route enables override)
-	if($route && file_exists(__ROOT__.DS.$route.DS.$frameworkPath))
-		require_once(__ROOT__.DS.$route.DS.$frameworkPath);
+	// Include if file exists (existence of __ROUTE__ enables override)
+	if(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$frameworkPath))
+		require_once(__ROOT__.DS.__ROUTE__.DS.$frameworkPath);
 	elseif(file_exists(__ROOT__.DS.$frameworkPath))
 		require_once(__ROOT__.DS.$frameworkPath);
-	elseif($route && file_exists(__ROOT__.DS.$route.DS.$modelPath))
-		require_once(__ROOT__.DS.$route.DS.$modelPath);
+	elseif(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$modelPath))
+		require_once(__ROOT__.DS.__ROUTE__.DS.$modelPath);
 	elseif(file_exists(__ROOT__.DS.$modelPath))
 		require_once(__ROOT__.DS.$modelPath);
-	elseif($route && file_exists(__ROOT__.DS.$route.DS.$viewPath) && strpos($class,'view') > 0)
-		require_once(__ROOT__.DS.$route.DS.$viewPath);
+	elseif(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$viewPath) && strpos($class,'view') > 0)
+		require_once(__ROOT__.DS.__ROUTE__.DS.$viewPath);
 	elseif(file_exists(__ROOT__.DS.$viewPath) && strpos($class,'view') > 0)
 		require_once(__ROOT__.DS.$viewPath);
-	elseif($route && file_exists(__ROOT__.DS.$route.DS.$controllerPath) && strpos($class,'controller') > 0)
-		require_once(__ROOT__.DS.$route.DS.$controllerPath);
+	elseif(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$controllerPath) && strpos($class,'controller') > 0)
+		require_once(__ROOT__.DS.__ROUTE__.DS.$controllerPath);
 	elseif(file_exists(__ROOT__.DS.$controllerPath) && strpos($class,'controller') > 0)
 		require_once(__ROOT__.DS.$controllerPath);
-	elseif($route && file_exists(__ROOT__.DS.$route.DS.$pluginPath) && strpos($class,'plugin') > 0)
-		require_once(__ROOT__.DS.$route.DS.$pluginPath);
+	elseif(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$pluginPath) && strpos($class,'plugin') > 0)
+		require_once(__ROOT__.DS.__ROUTE__.DS.$pluginPath);
 	elseif(file_exists(__ROOT__.DS.$pluginPath) && strpos($class,'plugin') > 0)
 		require_once(__ROOT__.DS.$pluginPath);
-	elseif($route && file_exists(__ROOT__.DS.$route.DS.$modulePath) && strpos($class,'module') > 0)
-		require_once(__ROOT__.DS.$route.DS.$modulePath);
+	elseif(defined('__ROUTE__') && file_exists(__ROOT__.DS.__ROUTE__.DS.$modulePath) && strpos($class,'module') > 0)
+		require_once(__ROOT__.DS.__ROUTE__.DS.$modulePath);
 	elseif(file_exists(__ROOT__.DS.$modulePath) && strpos($class,'module') > 0)
 		require_once(__ROOT__.DS.$modulePath);
 });
 
-	// Detect install; if .config.php does not exist, then assume that it's a fresh install
+// Detect install; if .config.php does not exist, then assume that it's a fresh install
+if(file_exists(__ROOT__.DS.'.configuration.php')) {
+	// Run application
 	new Application;
+} else {
+	// Hard code route
+	define('__ROUTE__','install');
+	// Run installation
+	new Installation;
+}
 ?>
