@@ -46,6 +46,10 @@ class MenuModule extends Addon {
 	}
 	// Render menu
 	public static function render($_Params) {
+		// Check if show-menu-module is turned on
+		if(!Configuration::getParameter('show-menu-module',SETTING_YES))
+			return false;
+		// Now render the rest
 		if(isset($_Params->menu)) {
 			$menu = $_Params->menu;
 		} else {
