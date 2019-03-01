@@ -33,6 +33,7 @@ class View {
 		return $this->view($_Data);
 	}
 	
+	// Render the plugins; these render things such as the template and modules
 	public function renderPlugins($html) {
 		// Render plugins
 		$_Plugins = Plugin::getAll();
