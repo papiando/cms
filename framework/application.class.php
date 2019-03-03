@@ -1,7 +1,15 @@
 <?php
+/**
+ * @application    Cubo CMS
+ * @type           Framework
+ * @class          Application
+ * @version        2.0.4
+ * @date           2019-03-03
+ * @author         Dan Barto
+ * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
+ * @license        MIT License; see LICENSE.md
+ */
 namespace Cubo;
-
-defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 final class Application {
 	protected static $_Configuration;
@@ -60,12 +68,13 @@ final class Application {
 				} else {
 					// Method does not exist for this controller
 					$controller = self::$_Router->getController();
-					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not have the method '{$method}' defined"]);
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>Text::_('-unknown-controller-method',['controller'=>$controller,'method'=>$method])]);
 				}
 			} else {
 				// Controller not found
 				$controller = self::$_Router->getController();
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"Controller '{$controller}' does not exist"]);
+				$text = Text::_('-unknown-controller',['controller'=>$controller]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>Text::_('-unknown-controller',['controller'=>$controller])]);
 			}
 		} catch(Error $_Error) {
 			$_Error->showMessage();
