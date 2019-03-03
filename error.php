@@ -28,7 +28,7 @@
 	<main id="main">
 		<div class="container">
 			<section id="main-content" role="main">
-				<article itemProp="hasPart" itemScope itemType="https://schema.org/Article"><h1>Error</h1><h4 class="text-danger"><?php echo $_error->message ?? "Unknown error"; ?></h4><div itemProp="articleBody"><p><?php echo $_error->description ?? "Sorry for the inconvenience. Please be patient while this is resolved."; ?></p></div></article>
+				<article itemProp="hasPart" itemScope itemType="https://schema.org/Article"><h1>Error</h1><h4 class="text-danger"><?php echo $_Error->message ?? "Unknown error"; ?></h4><div itemProp="articleBody"><p><?php echo $_Error->description ?? "Sorry for the inconvenience. Please be patient while this is resolved."; ?></p></div></article>
 			</section>
 		</div>
 	</main>
