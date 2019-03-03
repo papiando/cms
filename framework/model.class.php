@@ -1,7 +1,15 @@
 <?php
+/**
+ * @application    Cubo CMS
+ * @type           Framework
+ * @class          Model
+ * @version        2.0.4
+ * @date           2019-03-03
+ * @author         Dan Barto
+ * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
+ * @license        MIT License; see LICENSE.md
+ */
 namespace Cubo;
-
-defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class Model {
 	protected static $_Database;
@@ -22,7 +30,7 @@ class Model {
 		$list = [':id'=>$id,':status'=>STATUS_ARCHIVED,'modified'=>'NOW()','editor'=>Session::getUser()];
 		self::getDB()->update(strtolower(self::getClass()))->data($list);
 		if(empty($id)) {
-			self::getDB()->where("`#`<0");			// Safety net if no valid $id is provided
+			self::getDB()->where("`#`<0");				// Safety net if no valid $id is provided
 		} elseif(is_numeric($id)) {
 			self::getDB()->where("`#`=:id");
 		} else {
@@ -38,7 +46,7 @@ class Model {
 	
 	// Retrieve a single record from the model
 	public static function get($id,$columns = "*",$filter = "1") {
-		self::getDB()->select($columns)->from(strtolower(self::getClass()));
+		self::getDB()->select($columns ?? '*')->from(strtolower(self::getClass()));
 		if(empty($id)) {
 			return null;								// Safety net if no valid $id is provided
 		} elseif(is_numeric($id)) {
@@ -46,7 +54,7 @@ class Model {
 		} else {
 			self::getDB()->where("`name`=:id AND {$filter}");
 		}
-		$result = self::getDB()->loadObject(array(':id'=>$id));
+		$result = self::getDB()->loadObject([':id'=>$id]);
 		return (is_object($result) ? $result : null);	// Only return the object, otherwise return nothing
 	}
 	
