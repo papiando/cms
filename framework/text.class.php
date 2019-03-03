@@ -3,7 +3,7 @@
  * @application    Cubo CMS
  * @type           Framework
  * @class          Text
- * @version        2.0
+ * @version        2.0.4
  * @date           2019-03-03
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
@@ -11,16 +11,23 @@
  */
 namespace Cubo;
 
-defined('__CUBO__') || new \Exception("No use starting a class without an include");
-
 class Text {
 	public static function getLanguage() {
 		return Language::get(Application::getRouter()->getLanguage());
 	}
 	
 	public static function translate($text,$replacements = []) {
-		$translation = Translation::get($text,null,"`language`=".self::getLanguage());
-		return preg_replace_callback("/\{([^\}]+)\}/i",function($matches) { return $replacements[$matches[1]]; },$translation->translation ?? $text);
+		// Determine language if specified
+		$_Language = Language::getLanguage(Application::getRouter()->getLanguage());
+		if(!$_Language || $_Language->{'#'} == LANGUAGE_UNDEFINED) {
+			// Default to English if language is not defined
+			$_Language = Language::getLanguage('english');
+		}
+		$_Translation = Translation::get($_Language->alpha3.$text,null,"`language`=".$_Language->{'#'});
+		if($_Translation)
+			return preg_replace_callback("/\{([^}]+)\}/i",function($matches) use($replacements) { return $replacements[$matches[1]]; },$_Translation->translation);
+		else
+			return $text;
 	}
 	
 	public static function _($text,$replacements = []) {
