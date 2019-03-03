@@ -1,7 +1,15 @@
 <?php
+/**
+ * @application    Cubo CMS
+ * @type           Framework
+ * @class          Error
+ * @version        2.0.4
+ * @date           2019-03-03
+ * @author         Dan Barto
+ * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
+ * @license        MIT License; see LICENSE.md
+ */
 namespace Cubo;
-
-defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 define('ERROR_FATAL',1);
 define('ERROR_CRITICAL',2);
@@ -15,7 +23,7 @@ class Error extends \Exception {
 	public function __construct($error) {
 		if(is_array($error)) {
 			$this->_Error = (object)$error;
-			$this->_Error->description = $this->_error->description ?? '<p>Please <a href="/contact/admin">contact</a> your site administrator.</p>';
+			$this->_Error->description = $this->_Error->description ?? '<p>Please <a href="/contact/admin">contact</a> your site administrator.</p>';
 		} else {
 			$this->_Error = (object)['file'=>__FILE__,'severity'=>ERROR_SEVERE,'message'=>$error,'description'=>'<p>Please <a href="/contact/admin">contact</a> your site administrator.</p>'];
 		}
@@ -39,6 +47,7 @@ class Error extends \Exception {
 			$this->_Error->description .= "</table>";
 		}
 		empty($this->_Error->response) || http_response_code($this->_Error->response);
+		$_Error = $this->_Error;
 		include(__ROOT__.DS.'error.php');
 		die();
 	}
