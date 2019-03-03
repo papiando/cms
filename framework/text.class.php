@@ -3,10 +3,10 @@
  * @application    Cubo CMS
  * @type           Framework
  * @class          Text
- * @version        1.1.0
- * @date           2019-01-30
+ * @version        2.0
+ * @date           2019-03-03
  * @author         Dan Barto
- * @copyright      Copyright (C) 2017 - 2019 Papiando Riba Internet
+ * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
  */
 namespace Cubo;
@@ -18,15 +18,13 @@ class Text {
 		return Language::get(Application::getRouter()->getLanguage());
 	}
 	
-	public static function translate($property,$default = null) {
-		$language = self::getLanguage();
-		$query = "SELECT `title` FROM `translation` WHERE `language`=:language AND `name`=:property LIMIT 1";
-		$result = Application::getDB()->loadItem($query,array(':language'=>$language->id,':property'=>$property));
-		return ($result ? $result['title'] : ($default ? $default : $property));
+	public static function translate($text,$replacements = []) {
+		$translation = Translation::get($text,null,"`language`=".self::getLanguage());
+		return preg_replace_callback("/\{([^\}]+)\}/i",function($matches) { return $replacements[$matches[1]]; },$translation->translation ?? $text);
 	}
 	
-	public static function _($property,$default = null) {
-		return self::translate($property,$default);
+	public static function _($text,$replacements = []) {
+		return self::translate($text,$replacements);
 	}
 	
 	public static function plural($property,$count = 'n',$default = null) {
