@@ -1,7 +1,15 @@
 <?php
+/**
+ * @application    Cubo CMS
+ * @type           Framework
+ * @class          Controller
+ * @version        2.0.4
+ * @date           2019-03-03
+ * @author         Dan Barto
+ * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
+ * @license        MIT License; see LICENSE.md
+ */
 namespace Cubo;
-
-defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class Controller {
 	protected $_Model;
@@ -75,11 +83,11 @@ class Controller {
 				} else {
 					// No items returned, must be empty data set
 					$model = $this->getRouter()->getController();
-					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>2,'response'=>405,'message'=>"Model '{$model}' returned no data"]);
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>ERROR_WARNING,'response'=>405,'message'=>Text::_('no-data-model',['model'=>$model])]);
 				}
 			} else {
 				$model = $this->getRouter()->getController();
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>1,'response'=>405,'message'=>"Model '{$model}' does not exist"]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'severity'=>ERROR_CRITICAL,'response'=>405,'message'=>Text::_('unknown-model',['model'=>$model])]);
 			}
 		} catch(Error $_Error) {
 			$_Error->showMessage();
@@ -104,12 +112,12 @@ class Controller {
 			} else {
 				// Method does not exist for this view
 				$view = $this->getRouter()->getController();
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not have the method '{$method}' defined"]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_SEVERE,'response'=>405,'message'=>Text::_('unknown-view-method',['view'=>$view,'method'=>$method])]);
 			}
 		} else {
 			// View not found
 			$view = $this->getRouter()->getController();
-			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>"View '{$view}' does not exist"]);
+			throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_CRITICAL,'response'=>405,'message'=>Text::_('unknown-view',['view'=>$view])]);
 		}
 		return false;
 	}
