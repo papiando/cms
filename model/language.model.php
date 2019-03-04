@@ -22,7 +22,7 @@ class Language extends Model {
 			self::getDB()->where("`#`=:id");			// A number was provided
 		} elseif(strlen($id) == 2) {
 			self::getDB()->where("`alpha2`=:id");		// An two letter alpha code was provided
-		} elseif(strlen($id) == 2) {
+		} elseif(strlen($id) == 3) {
 			self::getDB()->where("`alpha3`=:id");		// An three letter alpha code was provided
 		} else {
 			self::getDB()->where("`name`=:id");
