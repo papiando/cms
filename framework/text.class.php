@@ -23,7 +23,7 @@ class Text {
 			// Default to English if language is not defined
 			$_Language = Language::getLanguage('english');
 		}
-		$_Translation = Translation::get($_Language->alpha3.$text,null,"`language`=".$_Language->{'#'});
+		$_Translation = Translation::get($_Language->alpha3.'-'.$text,null,"`language`=".$_Language->{'#'});
 		if($_Translation)
 			return preg_replace_callback("/\{([^}]+)\}/i",function($matches) use($replacements) { return $replacements[$matches[1]]; },$_Translation->translation);
 		else
