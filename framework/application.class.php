@@ -68,13 +68,13 @@ final class Application {
 				} else {
 					// Method does not exist for this controller
 					$controller = self::$_Router->getController();
-					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>Text::_('-unknown-controller-method',['controller'=>$controller,'method'=>$method])]);
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_SEVERE,'response'=>405,'message'=>Text::_('unknown-controller-method',['controller'=>$controller,'method'=>$method])]);
 				}
 			} else {
 				// Controller not found
 				$controller = self::$_Router->getController();
 				$text = Text::_('-unknown-controller',['controller'=>$controller]);
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>1,'response'=>405,'message'=>Text::_('-unknown-controller',['controller'=>$controller])]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_CRITICAL,'response'=>405,'message'=>Text::_('unknown-controller',['controller'=>$controller])]);
 			}
 		} catch(Error $_Error) {
 			$_Error->showMessage();
