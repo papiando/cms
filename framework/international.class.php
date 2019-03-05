@@ -4,6 +4,7 @@ namespace Cubo;
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
 class Locale {
+	protected static $timezoneAPI = "https://cubo-cms.com/api/timezone/all";
 	protected static $language;
 	protected static $timezone;
 	
@@ -26,6 +27,12 @@ class Locale {
 	// Returns current time zone
 	public static function getTimezone() {
 		return self::$timezone;
+	}
+	
+	// Returns list of time zones from API
+	public static function getTimezoneList($api = null) {
+		$json = file_get_contents($api ?? self::$timezoneAPI);
+		return json_decode($json);
 	}
 	
 	// Returns true if language identifier is valid
