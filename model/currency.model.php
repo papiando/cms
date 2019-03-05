@@ -2,7 +2,7 @@
 /**
  * @application    Cubo CMS
  * @type           Model
- * @class          Country
+ * @class          Currency
  * @version        2.0.4
  * @date           2019-03-05
  * @author         Dan Barto
@@ -11,6 +11,6 @@
  */
 namespace Cubo;
 
-class Country extends Model {
+class Currency extends Model {
 }
 ?>
