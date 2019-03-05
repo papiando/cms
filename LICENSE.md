@@ -1,6 +1,6 @@
-MIT License
+#MIT License
 
-Copyright (c) 2019 Cubo CMS by Papiando Riba Internet
+_Copyright (c) 2019 Cubo CMS by Papiando Riba Internet_
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
