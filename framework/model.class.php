@@ -40,13 +40,13 @@ class Model {
 	}
 	
 	// Determine if a record exists; used to verify uniqueness
-	public static function exists($id,$filter = "1") {
+	public static function exists($id,$filter = '1') {
 		return self::get($id,"`#`",$filter);			// Only return an object with the id, otherwise return nothing
 	}
 	
 	// Retrieve a single record from the model
-	public static function get($id,$columns = "*",$filter = "1") {
-		self::getDB()->select($columns ?? '*')->from(strtolower(self::getClass()));
+	public static function get($id,$columns = null,$filter = '1') {
+		self::getDB()->select($columns ?? self::$columns ?? '*')->from(strtolower(self::getClass()));
 		if(empty($id)) {
 			return null;								// Safety net if no valid $id is provided
 		} elseif(is_numeric($id)) {
@@ -59,8 +59,8 @@ class Model {
 	}
 	
 	// Retrieve set of records from the model
-	public static function getAll($columns = "*",$filter = "1",$order = "RAND()") {
-		self::getDB()->select($columns)->from(strtolower(self::getClass()))->where($filter)->order($order);
+	public static function getAll($columns = null,$filter = '1',$order = '`title`') {
+		self::getDB()->select($columns ?? self::$columns ?? '*')->from(strtolower(self::getClass()))->where($filter)->order($order);
 		$result = self::getDB()->load();
 		return (is_array($result) ? $result : []);		// Only return the array, otherwise return empty array
 	}
