@@ -3,7 +3,10 @@ namespace Cubo;
 
 defined('__CUBO__') || new \Exception("No use starting a class without an include");
 
-class Locale {
+class International {
+	protected static $countryAPI = "https://cubo-cms.com/api/country/all";
+	protected static $currencyAPI = "https://cubo-cms.com/api/currency/all";
+	protected static $languageAPI = "https://cubo-cms.com/api/language/all";
 	protected static $timezoneAPI = "https://cubo-cms.com/api/timezone/all";
 	protected static $language;
 	protected static $timezone;
@@ -13,15 +16,33 @@ class Locale {
 		return self::$language = parent::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
 	}
 	
+	// Returns list of currencies from API
+	public static function getCurrencyList($api = null) {
+		$json = file_get_contents($api ?? self::$currencyAPI);
+		return json_decode($json);
+	}
+	
 	// Returns current time for timezone
 	public static function getCurrentTime($timezone = null) {
 		empty($timezone) && $timezone = self::$timezone;
 		return new \DateTime('now', new \DateTimeZone($timezone));
 	}
 	
+	// Returns list of countries from API
+	public static function getCountryList($api = null) {
+		$json = file_get_contents($api ?? self::$countryAPI);
+		return json_decode($json);
+	}
+	
 	// Return current language
 	public static function getLanguage() {
 		return self::$language ?? self::detectLanguage();
+	}
+	
+	// Returns list of languages from API
+	public static function getLanguageList($api = null) {
+		$json = file_get_contents($api ?? self::$languageAPI);
+		return json_decode($json);
 	}
 	
 	// Returns current time zone
@@ -59,25 +80,6 @@ class Locale {
 			return self::$timezone = $timezone;
 		else
 			return null;
-	}
-	
-	
-	
-	
-	
-	
-	
-	public static function getLanguage() {
-		return self::$language = parent::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	}
-	
-	public static function getLocale() {
-		
-	}
-	
-	// Sets locale 
-	public static function setLocale($locale) {
-		
 	}
 }
 ?>
