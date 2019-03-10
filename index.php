@@ -1,6 +1,4 @@
 <?php
-namespace Cubo;
-
 // Added to allow debugging
 if(true || isset($_GET['debug'])) {
 	error_reporting(E_ALL);
@@ -17,6 +15,9 @@ if(true || isset($_GET['debug'])) {
 	}
 }
 
-// Auto-start Cubo framework
-require_once($_SERVER['DOCUMENT_ROOT'].DIRECTORY_SEPARATOR.'.autoload.php');
+// Bootstrap autoload
+require('.bootstrap.php');
+
+// Start Cubo Framework
+new Cubo\Framework\Application;
 ?>

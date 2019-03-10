@@ -1,5 +1,4 @@
-/.htaccess
-/.configuration.php
+/.*
 /web.config
 /*.log
 /*.zip
