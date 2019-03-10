@@ -18,6 +18,8 @@
         "components/jquery": "^3.3",
         "fortawesome/font-awesome": "^5.7",
         "heimrichhannot/popper.js": "^1.12",
-        "cubo-cms/asset": "^2.0"
+	"cubo-cms/admin": "^2.0",
+        "cubo-cms/asset": "^2.0",
+	"cubo-cms/install": "^2.0"
     }
 }
