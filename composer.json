@@ -9,7 +9,8 @@
     "authors": [
         {
             "name": "papiando",
-            "email": "info@papiando.com"
+            "email": "info@papiando.com",
+			"homepage": "https://papiando.com/",
         }
     ],
     "require": {
@@ -19,5 +20,14 @@
         "fortawesome/font-awesome": "^5.7",
         "heimrichhannot/popper.js": "^1.12",
         "cubo-cms/asset": "^2.0"
-    }
+    },
+	"suggests": {
+		"cubo-cms/admin": "Adds administration route",
+		"cubo-cms/install": "Adds installation route"
+	},
+	"autoload": {
+		"psr-4": {
+			"Cubo\\": ""
+		}
+	}
 }
