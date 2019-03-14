@@ -4,7 +4,7 @@
  * @type           Framework
  * @class          Application
  * @version        2.1.0
- * @date           2019-03-10
+ * @date           2019-03-12
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
@@ -57,10 +57,10 @@ final class Application {
 		Configuration::setParameter('title',Configuration::get('site-name','Cubo CMS'));
 		Configuration::setParameter('url',__BASE__.current(explode('?',$_SERVER['REQUEST_URI'])));
 		// Read route, controller, method, and name
-		$controller = __CUBO__.'\\Controller\\'.self::$Router->getController();
+		$object = ucfirst(self::$Router->getController());
 		$method = self::$Router->getMethod();
 		try {
-			if(class_exists($controller)) {
+			if(class_exists($controller = __CUBO__.(defined('__ROUTE__') ? '\\'.ucfirst(__ROUTE__) : '').'\\Controller\\'.$object) || class_exists($controller = __CUBO__.'\\Controller\\'.$object)) {
 				if(method_exists($controller,$method)) {
 					// Call the method and show the output
 					self::$Controller = new $controller;
@@ -68,14 +68,11 @@ final class Application {
 					echo $output;
 				} else {
 					// Method does not exist for this controller
-					$controller = self::$Router->getController();
-					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_SEVERE,'response'=>405,'message'=>Text::_('unknown-controller-method',['controller'=>$controller,'method'=>$method])]);
+					throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_SEVERE,'response'=>405,'message'=>Text::_('unknown-controller-method',['controller'=>$object,'method'=>$method])]);
 				}
 			} else {
 				// Controller not found
-				$controller = self::$Router->getController();
-				$text = Text::_('-unknown-controller',['controller'=>$controller]);
-				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_CRITICAL,'response'=>405,'message'=>Text::_('unknown-controller',['controller'=>$controller])]);
+				throw new Error(['class'=>__CLASS__,'method'=>__METHOD__,'line'=>__LINE__,'file'=>__FILE__,'severity'=>ERROR_CRITICAL,'response'=>405,'message'=>Text::_('unknown-controller',['controller'=>$object])]);
 			}
 		} catch(Error $Error) {
 			$Error->showMessage();

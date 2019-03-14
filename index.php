@@ -16,7 +16,7 @@ if(true || isset($_GET['debug'])) {
 }
 
 // Bootstrap autoload
-require('.bootstrap.php');
+require($_SERVER['DOCUMENT_ROOT'].'/.bootstrap.php');
 
 // Start Cubo Framework
 new Cubo\Framework\Application;

@@ -4,17 +4,17 @@
  * @type           Module
  * @class          User
  * @version        2.1.0
- * @date           2019-03-10
+ * @date           2019-03-11
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
  */
 namespace Cubo\Module;
-use Cubo\Framework\Addon as Addon;
-use Cubo\Framework\Application as Application;
-use Cubo\Framework\Configuration as Configuration;
-use Cubo\Framework\Session as Session;
-use Cubo\Model\Image as Image;
+use Cubo\Framework\Addon;
+use Cubo\Framework\Application;
+use Cubo\Framework\Configuration;
+use Cubo\Framework\Session;
+use Cubo\Model\Image;
 
 class User extends Addon {
 	// Render user avatar
@@ -30,7 +30,7 @@ class User extends Addon {
 		if(Session::isGuest()) {
 			$html = '<a class="nav-link p-0 text-nowrap d-flex align-items-center" href="'.$path.'user/login"><span class="circle"><i class="fa fa-user-lock fa-fw fa-lg"></i></span><span class="d-none d-md-inline pl-2">Login</span></a>';
 		} else {
-			if(Session::get('_User')->avatar) {
+			if(Session::get('User')->avatar) {
 				$Image = Image::get(Session::get('User')->avatar,"`name`,`title`");
 				$image_html = '<img src="/image/'.$Image->name.'?avatar" alt="'.Session::get('User')->title.'" />';
 			} else {

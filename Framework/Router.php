@@ -4,7 +4,7 @@
  * @type           Framework
  * @class          Router
  * @version        2.1.0
- * @date           2019-03-10
+ * @date           2019-03-11
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
@@ -51,7 +51,7 @@ final class Router {
 	
 	// Get parsed controller
 	public function getRoute() {
-		return empty($this->Route['path']) ? '/' : '/'.trim($this->Route['path'],'/').'/';
+		return empty($this->Route->path) ? '/' : '/'.trim($this->Route->path,'/').'/';
 	}
 	
 	// Parse URI and determine routes
@@ -68,9 +68,9 @@ final class Router {
 		$uri_parts[] = '';
 		$path_parts = explode('/',$uri_parts[0]);
 		// Define accepted routes
-		$routes = Configuration::get('Route',[''=>[]]);
+		$routes = (array)Configuration::get('route',(object)[''=>(object)[]]);
 		// Predefine default route, controller, and method
-		$this->_Route = $routes[''];
+		$this->Route = $routes[''];
 		$this->controller = Configuration::getDefault('controller','article');
 		$this->format = Configuration::getDefault('format',$_GET['format'] ?? 'html');
 		$this->language = Configuration::getDefault('language',$_GET['lang'] ?? 'undefined');
@@ -82,10 +82,10 @@ final class Router {
 			if(in_array($part,array_keys($routes))) {
 				$this->Route = $routes[$part];
 				defined('__ROUTE__') || define('__ROUTE__',trim($this->getRoute(),'/'));
-				$this->controller = $this->Route['controller'] ?? $this->Route['default-controller'] ?? $this->controller;
-				$this->format = $this->Route['format'] ?? $this->Route['default-format'] ?? $this->format;
-				$this->language = $this->Route['language'] ?? $this->Route['default-language'] ?? $this->language;
-				$this->method = $this->Route['method'] ?? $this->Route['default-method'] ?? $this->method;
+				$this->controller = $this->Route->controller ?? $this->Route->{'default-controller'} ?? $this->controller;
+				$this->format = $this->Route->format ?? $this->Route->{'default-format'} ?? $this->format;
+				$this->language = $this->Route->language ?? $this->Route->{'default-language'} ?? $this->language;
+				$this->method = $this->Route->method ?? $this->Route->{'default-method'} ?? $this->method;
 				array_shift($path_parts);
 				$part = strtolower(current($path_parts));
 			}

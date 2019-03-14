@@ -1,18 +1,17 @@
 <?php
 /**
  * @application    Cubo CMS
- * @type           Controller
- * @class          Category
+ * @type           Model
+ * @class          Image
  * @version        2.1.0
- * @date           2019-03-12
+ * @date           2019-03-11
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
  */
-namespace Cubo\Controller;
-use Cubo\Framework\Controller;
+namespace Cubo\Model;
+use Cubo\Framework\Model;
 
-class Category extends Controller {
-	protected $columns = "*";
+class Image extends Model {
 }
 ?>

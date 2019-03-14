@@ -4,7 +4,7 @@
  * @type           Framework
  * @class          Configuration
  * @version        2.1.0
- * @date           2019-03-10
+ * @date           2019-03-11
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
@@ -126,15 +126,15 @@ final class Configuration {
 		self::$Configuration = (object)[];
 		// Detect if file exists
 		if(file_exists(__ROOT__.DS.$file)) {
-			if(substr($file,-4) == '.php')
+			if(substr($file,-4) == '.php') {
 				// Assume configuration is loaded via PHP
 				include_once(__ROOT__.DS.$file);
-			elseif(substr($file,-5) == '.json')
+			} elseif(substr($file,-5) == '.json') {
 				// Assume configuration is kept in JSON format
-				self::$Configuration = json_decode(file_get_contents($file));
-			else
+				self::$Configuration = json_decode(file_get_contents(__ROOT__.DS.$file));
+			} else {
 				// Ignore for the moment, but other formats like XML could be added here
-				;
+			}
 		}
 	}
 	

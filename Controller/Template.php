@@ -4,13 +4,13 @@
  * @type           Controller
  * @class          Template
  * @version        2.1.0
- * @date           2019-03-10
+ * @date           2019-03-12
  * @author         Dan Barto
  * @copyright      Copyright (c) 2019 Cubo CMS; see COPYRIGHT.md
  * @license        MIT License; see LICENSE.md
  */
 namespace Cubo\Controller;
-use Cubo\Framework\Controller as Controller;
+use Cubo\Framework\Controller;
 
 class Template extends Controller {
 	protected $columns = "name,accesslevel,script,status,style";
