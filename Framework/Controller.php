@@ -2,16 +2,57 @@
   namespace Cubo\Framework;
 
   class Controller {
-    // Static method to determine if controller exists
-    public static function exists($controller) {
-      $controllerClass = __CUBO__.'\\Controller\\'.ucfirst($controller);
-      return class_exists($controllerClass);
+    protected $model;
+    protected $params;
+    protected $router;
+
+    // Upon construct save the router
+    public function __construct($router) {
+      $this->router = $router;
+      $this->params = $router->getParams();
     }
 
-    // Static method to determine if controller's method exists
-    public static function methodExists($controller, $method) {
-      $controllerClass = __CUBO__.'\\Controller\\'.ucfirst($controller);
-      return method_exists($controllerClass, $method);
+    // Allow returning parameters as JSON
+    public function __toString() {
+      return (string)$this->params;
+    }
+
+    // Return the router
+    public function getRouter() {
+      return $this->router;
+    }
+
+    // Invoke model
+    public function invokeModel() {
+      try {
+        $model = Model::className($this->params->get('controller'));
+        $this->method = $this->params->get('method', 'default');
+        // Determine if model exists
+        if(Model::exists($model)) {
+          // Initiate model
+          return $this->model = new $model();
+        } else {
+          // The model does not exist
+          throw new Error(['message'=>'model-does-not-exist', 'params'=>$this->params]);
+        }
+      } catch(Error $error) {
+          $error->render();
+      }
+    }
+
+    // Determine if method exists
+    public function methodExists($method) {
+      return method_exists($this, $method);
+    }
+
+    // Return class name
+    public static function className($controller = null) {
+      return $controller? (__CUBO__ == explode('\\', $controller)[0]? $controller: __CUBO__.'\\Controller\\'.ucfirst($controller)): __CLASS__;
+    }
+
+    // Static method to determine if controller exists
+    public static function exists($controller) {
+      return class_exists(self::className($controller));
     }
   }
 ?>

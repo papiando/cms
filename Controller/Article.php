@@ -1,6 +1,8 @@
 <?php
   namespace Cubo\Controller;
   use Cubo\Framework\Controller;
+  use Cubo\Framework\Error;
+  use Cubo\Framework\Model;
 
   class Article extends Controller {
     // Method: all
@@ -13,12 +15,12 @@
 
     // Method: default
     public function default() {
-      $this->all();
+      return $this->all();
     }
 
     // Method: read
     public function read() {
-      $this->view();
+      return $this->view();
     }
 
     // Method: status
@@ -27,6 +29,8 @@
 
     // Method: view
     public function view() {
+      $model = $this->invokeModel();
+      return 'Showing '.$this->params->get('controller').': '.$this->params->get('name');
     }
   }
 ?>

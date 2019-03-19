@@ -2,12 +2,40 @@
   namespace Cubo\Framework;
 
   final class Router {
-    public $params;
-    private $routes;
+    private $controller;        // Pointer to Controller object
+    private $method;            // Invoked method
+    private $params;            // Parameter set
+    private $routes;            // Set of routes
 
     // Upon construct initialise router
     public function __construct($routes) {
       $this->init($routes);
+    }
+
+    // Allow returning parameters as JSON
+    public function __toString() {
+      return (string)$this->params;
+    }
+
+    // Get parameter
+    public function get($property, $default = null) {
+      is_null($this->params) && $this->params = new Set();
+      return $this->params->get($property, $default);
+    }
+
+    // Return controller object
+    public function getController() {
+      return $this->controller;
+    }
+
+    // Return invoked method
+    public function getMethod() {
+      return $this->method;
+    }
+
+    // Return parameter set
+    public function getParams() {
+      return $this->params;
     }
 
     // Initialise router
@@ -15,17 +43,18 @@
       $this->routes = $routes;
     }
 
-    // Invoke controller's method
-    public function invokeMethod() {
+    // Invoke controller
+    public function invokeController($uri = null) {
+      // Parse requested URI if not yet parsed
+      $this->params || $this->parse($uri ?? $_SERVER['REQUEST_URI']);
       try {
-        if(Controller::exists($this->params->get('controller', 'undefined'))) {
-          echo '<p>Controller found!</p>';
-          if(Controller::methodExists($this->params->get('controller', 'undefined'), $this->params->get('method', 'default'))) {
-            echo '<p>Method found!</p>';
-          } else {
-            throw new Error(['message'=>'method-does-not-exist', 'params'=>$this->params]);
-          }
+        $controller = Controller::className($this->params->get('controller', 'undefined'));
+        // Determine if controller exists
+        if(Controller::exists($controller)) {
+          // Initiate controller
+          return $this->controller = new $controller($this);
         } else {
+          // The controller does not exist
           throw new Error(['message'=>'controller-does-not-exist', 'params'=>$this->params]);
         }
       } catch(Error $error) {
@@ -33,12 +62,30 @@
       }
     }
 
+    // Invoke method
+    public function invokeMethod() {
+      // Invoke controller if not yet invoked
+      empty($this->controller) && $this->invokeController;
+      try {
+        $this->method = $this->params->get('method', 'default');
+        if($this->controller->methodExists($this->method)) {
+          // Call method
+          return $this->controller->{$this->method}();
+        } else {
+          // The method does not exist
+          throw new Error(['message'=>'method-does-not-exist', 'params'=>$this->params]);
+        }
+      } catch(Error $error) {
+        $error->render();
+      }
+    }
+
     // Parse route
-    public function parse($url, $routes = null) {
+    public function parse($uri, $routes = null) {
       is_null($routes) || $this->$routes = $routes;
       // Expand url and match to route list
       foreach($this->routes as $route) {
-        $parts = explode('/', trim(parse_url($url, PHP_URL_PATH), '/'));
+        $parts = explode('/', trim(parse_url($uri, PHP_URL_PATH), '/'));
         $params = new Set();
         if(count($parts) == count($route->parts)) {
           $matched = true;
