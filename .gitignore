@@ -1,9 +1,9 @@
-/.htaccess
-/.configuration.php
+/.*
 /web.config
 /*.log
 /*.zip
 /*.sql
+/.config/
 /admin/
 /api/
 /backup/
